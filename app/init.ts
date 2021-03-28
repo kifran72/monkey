@@ -26,8 +26,8 @@ const init = async (client: any, clientMongo: any) => {
 
     let insertMonkeyStats = (data: any) => {
         clientMongo.connect(function(err: any) {
-            const db = clientMongo.db(dbName);
-            const collection = db.collection('monkeys');
+            let db = clientMongo.db(dbName);
+            let collection = db.collection('monkeys');
             collection.insertMany(data, (err: any, result: any) => { if (err) throw err; })
             clientMongo.close();
         });
@@ -37,6 +37,7 @@ const init = async (client: any, clientMongo: any) => {
 
     let getcandles = async () => {
         let candles = await client.candles({ symbol: 'ETHBTC' });
+        // setInterval (()=> {},3000)
         console.log(chalk.green(candles[0].trades));
     };
     getcandles();
