@@ -32,8 +32,14 @@ const init = async (client: any, clientMongo: any) => {
             clientMongo.close();
         });
     }
-    let test = await getMonkeyStats();
-    insertMonkeyStats(test);
+    // let test = await getMonkeyStats();
+    // insertMonkeyStats(test);
+
+    let getcandles = async () => {
+        let candles = await client.candles({ symbol: 'ETHBTC' });
+        console.log(chalk.green(candles[0].trades));
+    };
+    getcandles();
 };
 
 
