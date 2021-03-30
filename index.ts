@@ -1,39 +1,25 @@
 import express from 'express';
-import * as dotenv from "dotenv";
-import chalk from "chalk";
-import Binance from 'binance-api-node'
-import { MongoClient } from "mongodb";
-
-dotenv.config({ path: 'key.env' });
+import { index } from './app/index';
+import Services from './app/services';
+import * as dotenv from 'dotenv';
+import chalk from 'chalk';
+import { TwingLoaderFilesystem, TwingEnvironment } from 'twing';
+import path from 'path';
+import cookieParser from 'cookie-parser';
 const app = express();
 const PORT = 3000;
-const url = 'mongodb://localhost:27017';
-// Database Name
-const dbName = 'monkey-project';
-const clientMongo = new MongoClient(url, { useNewUrlParser: true, useUnifiedTopology: true });
-const client = Binance({
-    apiKey: process.env.KEY,
-    apiSecret: process.env.SECRET
-})
+const services = new Services();
+const loader = new TwingLoaderFilesystem("./app/templates");
+const twing = new TwingEnvironment(loader);
 
-// Mongo 
-clientMongo.connect(function(err) {
-    console.log('BDD Connected successfully');
-    const db = clientMongo.db(dbName);
-});
+//CONFIG
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
+app.use(express.static(path.join(__dirname, "public")));
+dotenv.config({ path: 'key.env' });
+index.init(services.BinanceAPI, services.Mongo);
+index.routes(app, twing);
 
-// API
-require('./app/index').init(client, clientMongo);
-require('./app/index').routes(app, client, dbName);
-
-app.listen(PORT, () => {
-    client.ping().then(
-        ping => {
-            if (ping) {
-                console.log(chalk.blue('API: api.binance UP'));
-                console.log(chalk.blue('Port: ' + PORT));
-            }
-        }).catch(err => {
-            console.log(chalk.red('API: api.binance DOWN', err));
-        })
-})
+//Start server 
+app.listen(PORT, () => { console.log(chalk.blue('Client web: http://localhost:' + PORT)); });

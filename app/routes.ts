@@ -1,14 +1,8 @@
-const routes = (app: any, client: any) => {
-    app.get('/get-accountInfo', async (req: any, res: any) => {
-        res.send(await client.accountInfo());
-    });
-
-    app.get('/get-infos', async (req: any, res: any) => {
-        res.send(await client.getInfo());
-    });
-
-    app.get('/get-prices', async (req: any, res: any) => {
-        res.send(await client.prices());
+export const routes = (app: any, twing: any) => {
+    app.get('/', function(req: any, res: any) {
+        twing.render("index.twig", { name: "Titi" }).then((output: any) => {
+            res.end(output);
+        });
     });
 
     // ALL OTHER ROUTES REDIRECT TO '/'
@@ -16,5 +10,3 @@ const routes = (app: any, client: any) => {
         res.redirect('/');
     });
 };
-
-module.exports = routes
