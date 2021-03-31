@@ -1,12 +1,12 @@
-import axios from "axios";
+import axios from 'axios'
 import Binance from 'binance-api-node'
-import chalk from "chalk";
+import chalk from 'chalk';
 import * as dotenv from 'dotenv';
 dotenv.config({ path: 'key.env' });
 
 const client = Binance({
-  apiKey:  process.env.KEY,
-  apiSecret:  process.env.SECRET
+    apiKey: process.env.KEY,
+    apiSecret: process.env.SECRET
 })
 
 const orderFilters: any = {
@@ -19,7 +19,7 @@ const orderFilters: any = {
 
 export default class BinanceAPI {
 
-    
+
     constructor(apiKey: String | undefined, apiSecret: String | undefined) { this.ping(); }
 
     async ping() {
@@ -34,10 +34,26 @@ export default class BinanceAPI {
             console.error(e);
         }
     }
-    
+
     async exchangeInfo() {
         try {
             return await client.exchangeInfo();
+        } catch (e) {
+            console.error(e);
+        }
+    }
+
+    async dailyStats() {
+        try {
+            return await client.dailyStats();
+        } catch (e) {
+            console.error(e);
+        }
+    }
+
+    async bookInfo(symbol: any, limit?: any) {
+        try {
+            return await client.book({ symbol: symbol, limit: limit | 100 });
         } catch (e) {
             console.error(e);
         }
@@ -50,5 +66,5 @@ export default class BinanceAPI {
             console.error(e);
         }
     }
-    
+
 };
