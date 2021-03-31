@@ -3,10 +3,8 @@ import chalk from 'chalk';
 
 const url: string = 'mongodb://localhost:27017/monkey-project';
 const Schema = mongoose.Schema;
-const monkeys = new Schema({
-    listMonkeys: { type: Object }
-});
-const monkeysModel = mongoose.model('monkeys', monkeys);
+const monkeys = new Schema({}, { strict: false })
+const TestCollection = mongoose.model('monkeys', monkeys)
 const paramsConnections = {
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -24,18 +22,20 @@ export default class Mongo {
     }
 
     async insert(data: any) {
-        await monkeysModel.insertMany(data);
+        let body = data
+        const testCollectionData = new TestCollection(body)
+        await testCollectionData.save();
     }
 
-    async update(filter: any, data: any) {
-        await monkeysModel.updateMany(filter, data);
-    }
+    // async update(filter: any, data: any) {
+    //     await monkeysModel.updateMany(filter, data);
+    // }
 
-    async delete(filter: any, data: any) {
-        await monkeysModel.deleteMany(filter, data);
-    }
+    // async delete(filter: any, data: any) {
+    //     await monkeysModel.deleteMany(filter, data);
+    // }
 
-    async find(filter: any) {
-        return await monkeysModel.find(filter);
-    }
+    // async find(filter: any) {
+    //     return await monkeysModel.find(filter);
+    // }
 };

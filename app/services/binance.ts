@@ -1,33 +1,54 @@
 import axios from "axios";
+import Binance from 'binance-api-node'
 import chalk from "chalk";
+import * as dotenv from 'dotenv';
+dotenv.config({ path: 'key.env' });
+
+const client = Binance({
+  apiKey:  process.env.KEY,
+  apiSecret:  process.env.SECRET
+})
+
+const orderFilters: any = {
+    type: 'LIMIT',
+    symbol: 'XLMETH',
+    side: 'BUY',
+    quantity: '100',
+    price: '0.0002',
+};
 
 export default class BinanceAPI {
-    apiKey: String | undefined = '';
-    apiSecret: String | undefined = '';
-    instance = axios.create({
-        baseURL: 'https://api.binance.com',
-        timeout: 1000,
-        headers: { 'X-Requested-With': 'XMLHttpRequest' },
-    });
 
-    constructor(apiKey: String | undefined, apiSecret: String | undefined) {
-        this.apiKey = apiKey;
-        this.apiSecret = apiSecret;
-        this.instance.get('/api/v3/ping').then(resp => {
-            if (resp) {
+    
+    constructor(apiKey: String | undefined, apiSecret: String | undefined) { this.ping(); }
+
+    async ping() {
+        try {
+            let test = await client.ping();
+            if (test) {
                 console.log(chalk.blue('API Binance UP'))
             } else {
-                console.log(chalk.red('API Binance UP'));
+                console.log(chalk.red('API Binance DOWN'));
             }
-        })
+        } catch (e) {
+            console.error(e);
+        }
+    }
+    
+    async exchangeInfo() {
+        try {
+            return await client.exchangeInfo();
+        } catch (e) {
+            console.error(e);
+        }
     }
 
-    exchangeInfo() {
-        return new Promise((resolve, reject) => {
-            this.instance.get('/api/v3/exchangeInfo').then(resp => {
-                if (!resp) reject('erreur exchangeInfo');
-                resolve(resp);
-            });
-        })
+    async testOrder() {
+        try {
+            return await client.orderTest(orderFilters)
+        } catch (e) {
+            console.error(e);
+        }
     }
+    
 };
