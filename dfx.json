@@ -1,19 +1,19 @@
 {
   "canisters": {
-    "monkey": {
-      "main": "src/monkey/main.mo",
+    "Monkeys": {
+      "main": "src/Monkeys/main.mo",
       "type": "motoko"
     },
-    "monkey_assets": {
+    "Monkeys_assets": {
       "dependencies": [
-        "monkey"
+        "Monkeys"
       ],
       "frontend": {
-        "entrypoint": "src/monkey_assets/public/main.js"
+        "entrypoint": "src/Monkeys_assets/public/main.js"
       },
       "source": [
-        "src/monkey_assets/public",
-        "dist/monkey_assets/"
+        "src/Monkeys_assets/public",
+        "dist/Monkeys_assets/"
       ],
       "type": "assets"
     }
