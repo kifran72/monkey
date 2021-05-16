@@ -19,4 +19,4 @@ dfx help
 dfx config --help
 ```
 
-Front: http://127.0.0.1:8000/?canisterId=youID
+Front: http://127.0.0.1:8000/authorize?canisterId=youID
