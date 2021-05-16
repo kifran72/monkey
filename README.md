@@ -16,4 +16,4 @@ npm i && dfx start --background
 dfx deploy
 ```
 
-Front: http://127.0.0.1:8000/authorize?canisterId=youID
+Front: http://127.0.0.1:8000/authorize?canisterId=yourCanisterID
