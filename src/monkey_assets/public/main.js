@@ -1,5 +1,5 @@
-import monkey from 'ic:canisters/Monkeys';
-import monkey_assets from 'ic:canisters/Monkeys_assets';
+import monkey from 'ic:canisters/monkey';
+import monkey_assets from 'ic:canisters/monkey_assets';
 import $ from "jquery";
 import "./index.css";
 import {
