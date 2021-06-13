@@ -1,17 +1,20 @@
-# Monkey ICP && CYCLE CRYTO PROJECT
+# monkey
 
-Welcome to our new Monkey project to the internet computer development community.
+Welcome to your new monkey project and to the internet computer development community. By default, creating a new project adds this README and some template files to your project directory. You can edit these template files to customize your project and to include your own code to speed up the development cycle.
 
-First run this:
+To get started, you might want to explore the project directory structure and the default configuration file. Working with this project in your development environment will not affect any production deployment or identity tokens.
+
+To learn more before you start working with monkey, see the following documentation available online:
+
+- [Quick Start](https://sdk.dfinity.org/docs/quickstart/quickstart-intro.html)
+- [SDK Developer Tools](https://sdk.dfinity.org/docs/developers-guide/sdk-guide.html)
+- [Motoko Programming Language Guide](https://sdk.dfinity.org/docs/language-guide/motoko.html)
+- [Motoko Language Quick Reference](https://sdk.dfinity.org/docs/language-guide/language-manual.html)
+
+If you want to start working on your project right away, you might want to try the following commands:
+
 ```bash
-sudo apt install nodejs npm curl git && DFX_VERSION=0.7.0-beta.3 sh -ci "$(curl -fsSL https://sdk.dfinity.org/install.sh)"
+cd monkey/
+dfx help
+dfx config --help
 ```
-
-Start project:
-```bash
-git clone https://github.com/kifran72/monkey && cd monkey
-npm i && dfx start --background
-dfx deploy
-```
-
-Front: http://127.0.0.1:8000/?canisterId=ryjl3-tyaaa-aaaaa-aaaba-cai

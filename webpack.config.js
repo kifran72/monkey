@@ -1,38 +1,47 @@
 const path = require("path");
+const webpack = require("webpack");
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 const TerserPlugin = require("terser-webpack-plugin");
 const dfxJson = require("./dfx.json");
 
 // List of all aliases for canisters. This creates the module alias for
-// the `import ... from "ic:canisters/xyz"` where xyz is the name of a
+// the `import ... from "@dfinity/ic/canisters/xyz"` where xyz is the name of a
 // canister.
-const aliases = Object.entries(dfxJson.canisters).reduce((acc, [name,]) => {
+const aliases = Object.entries(dfxJson.canisters).reduce(
+  (acc, [name, _value]) => {
+    // Get the network name, or `local` by default.
+    const networkName = process.env["DFX_NETWORK"] || "local";
+    const outputRoot = path.join(
+      __dirname,
+      ".dfx",
+      networkName,
+      "canisters",
+      name
+    );
 
-  // Get the network name, or `local` by default.
-  const networkName = process.env['DFX_NETWORK'] || 'local';
-  const outputRoot = path.join(__dirname, '.dfx', networkName, 'canisters', name);
-
-  return {
-    ...acc,
-    ['ic:canisters/' + name]: path.join(outputRoot, name + '.js'),
-    ['ic:idl/' + name]: path.join(outputRoot, name + '.did.js'),
-  };
-}, {
-});
+    return {
+      ...acc,
+      ["dfx-generated/" + name]: path.join(outputRoot, name + ".js"),
+    };
+  },
+  {}
+);
 
 /**
  * Generate a webpack configuration for a canister.
  */
 function generateWebpackConfigForCanister(name, info) {
-  if (typeof info.frontend !== 'object') {
+  if (typeof info.frontend !== "object") {
     return;
   }
 
-  const inputRoot = __dirname;
-  const entry = path.join(inputRoot, info.frontend.entrypoint);
-
   return {
     mode: "production",
-    entry,
+    entry: {
+      // The frontend.entrypoint points to the HTML file for this build, so we need
+      // to replace the extension to `.js`.
+      index: path.join(__dirname, info.frontend.entrypoint).replace(/\.html$/, ".jsx"),
+    },
     devtool: "source-map",
     optimization: {
       minimize: true,
@@ -40,25 +49,54 @@ function generateWebpackConfigForCanister(name, info) {
     },
     resolve: {
       alias: aliases,
+      extensions: [".js", ".ts", ".jsx", ".tsx"],
+      fallback: {
+        "assert": require.resolve("assert/"),
+        "buffer": require.resolve("buffer/"),
+        "events": require.resolve("events/"),
+        "stream": require.resolve("stream-browserify/"),
+        "util": require.resolve("util/"),
+      },
     },
     output: {
-      filename: "index.js",
+      filename: "[name].js",
       path: path.join(__dirname, "dist", name),
     },
-    plugins: [],
+
+    // Depending in the language or framework you are using for
+    // front-end development, add module loaders to the default
+    // webpack configuration. For example, if you are using React
+    // modules and CSS as described in the "Adding a stylesheet"
+    // tutorial, uncomment the following lines:
     module: {
-      rules: [{
-        test: /\.css$/,
-        use: ['style-loader', 'css-loader']
-      }]
-    }
+     rules: [
+       { test: /\.(ts|tsx|jsx)$/, loader: "ts-loader" },
+       { test: /\.css$/, use: ['style-loader','css-loader'] }
+     ]
+    },
+    plugins: [
+      new HtmlWebpackPlugin({
+        template: path.join(__dirname, info.frontend.entrypoint),
+        filename: 'index.html',
+        chunks: ['index'],
+      }),
+      new webpack.ProvidePlugin({
+        Buffer: [require.resolve('buffer/'), 'Buffer'],
+        process: require.resolve('process/browser'),
+      }),
+    ],
+    devServer: {
+      historyApiFallback: false,
+    },
   };
 }
 
-// If you have webpack configurations you want to build as part of this
-// config, add them here.
+// If you have additional webpack configurations you want to build
+//  as part of this configuration, add them to the section below.
 module.exports = [
-  ...Object.entries(dfxJson.canisters).map(([name, info]) => {
-    return generateWebpackConfigForCanister(name, info);
-  }).filter(x => !!x),
+  ...Object.entries(dfxJson.canisters)
+    .map(([name, info]) => {
+      return generateWebpackConfigForCanister(name, info);
+    })
+    .filter((x) => !!x),
 ];

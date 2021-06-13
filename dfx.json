@@ -9,10 +9,10 @@
         "monkey"
       ],
       "frontend": {
-        "entrypoint": "src/monkey_assets/public/main.js"
+        "entrypoint": "src/monkey_assets/src/index.html"
       },
       "source": [
-        "src/monkey_assets/public",
+        "src/monkey_assets/assets",
         "dist/monkey_assets/"
       ],
       "type": "assets"
@@ -23,7 +23,7 @@
       "packtool": ""
     }
   },
-  "dfx": "0.7.0-beta.3",
+  "dfx": "0.7.1",
   "networks": {
     "local": {
       "bind": "127.0.0.1:8000",
