@@ -37,6 +37,7 @@ function generateWebpackConfigForCanister(name, info) {
 
   return {
     mode: "production",
+    context: path.resolve(__dirname, 'src'),
     entry: {
       // The frontend.entrypoint points to the HTML file for this build, so we need
       // to replace the extension to `.js`.
