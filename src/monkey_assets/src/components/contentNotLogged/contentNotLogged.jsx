@@ -7,7 +7,7 @@ export default class ContentNotLogged extends React.Component {
     
     render() {
         return (
-            <div>
+            <div class="content">
                 <h1>Coucou</h1>
             </div>
         );
