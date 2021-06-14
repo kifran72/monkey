@@ -3,6 +3,7 @@ const webpack = require("webpack");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const TerserPlugin = require("terser-webpack-plugin");
 const dfxJson = require("./dfx.json");
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 // List of all aliases for canisters. This creates the module alias for
 // the `import ... from "@dfinity/ic/canisters/xyz"` where xyz is the name of a
@@ -71,8 +72,12 @@ function generateWebpackConfigForCanister(name, info) {
     // tutorial, uncomment the following lines:
     module: {
      rules: [
-       { test: /\.(ts|tsx|jsx)$/, loader: "ts-loader" },
-       { test: /\.css$/, use: ['style-loader','css-loader'] }
+      { test: /\.(ts|tsx|jsx)$/, loader: "ts-loader" },
+      // { test: /\.css$/, use: ['style-loader','css-loader'] },
+      {
+        test: /\.css$/i,
+        use: [MiniCssExtractPlugin.loader, 'css-loader'],
+      },
      ]
     },
     plugins: [
@@ -85,10 +90,13 @@ function generateWebpackConfigForCanister(name, info) {
         Buffer: [require.resolve('buffer/'), 'Buffer'],
         process: require.resolve('process/browser'),
       }),
+      new MiniCssExtractPlugin({
+        linkType: 'text/css',
+      })
     ],
     devServer: {
-      historyApiFallback: false,
-    },
+  
+    }
   };
 }
 
