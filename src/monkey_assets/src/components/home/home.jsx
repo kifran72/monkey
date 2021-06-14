@@ -1,17 +1,26 @@
 import { Actor, HttpAgent } from '@dfinity/agent';
 import { idlFactory as monkey_idl, canisterId as monkey_id } from 'dfx-generated/monkey';
 import * as React from 'react';
-import Navbar from '../navbar/navbar';
-import ContentNotLogged from '../contentNotLogged/contentNotLogged';
-import '../../../assets/main.css'; // Import custom styles
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link
+} from "react-router-dom";
 import {ethers} from 'ethers';
 
+// Components
+import Navbar from '../navbar/navbar';
+import Login from '../login/login';
+import ContentLogged from '../contentLogged/contentLogged';
+import ContentNotLogged from '../contentNotLogged/contentNotLogged';
 
 export default class Home extends React.Component {
   constructor (props) {
         super(props);
         this.state = {
           agent: new HttpAgent(),
+          user: null
         }
         this.etherJSConnect()
     }
@@ -70,10 +79,22 @@ export default class Home extends React.Component {
   
   render() {
     return (
-        <div>
-            <Navbar />
-            <ContentNotLogged />
-        </div>
+      <div>
+        <Router>
+          <Navbar />
+          {this.state.user === null 
+            ? <ContentNotLogged /> 
+            :  <ContentLogged />
+          }
+        
+          {/* SETUP ROUTES */}
+          <Switch>
+            <Route path="/login">
+              <Login />
+            </Route>
+          </Switch>
+        </Router> 
+      </div>
     );
   }
 }
