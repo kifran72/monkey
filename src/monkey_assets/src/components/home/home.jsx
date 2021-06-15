@@ -11,6 +11,8 @@ import {ethers} from 'ethers';
 
 // Components
 import Navbar from '../navbar/navbar';
+import NavbarNotConnected from '../navbar/navbarNotConnected';
+import Dashboard from '../dashboard/dashboard';
 import Login from '../login/login';
 import ContentLogged from '../contentLogged/contentLogged';
 import ContentNotLogged from '../contentNotLogged/contentNotLogged';
@@ -81,16 +83,24 @@ export default class Home extends React.Component {
     return (
       <div>
         <Router>
-          <Navbar />
-          {this.state.user === null 
+         
+         
+          {this.state.user !== null 
+            ?  <Navbar /> 
+            : <NavbarNotConnected />
+          }
+          {/* {this.state.user === null 
             ? <ContentNotLogged /> 
             :  <ContentLogged />
-          }
+          } */}
         
           {/* SETUP ROUTES */}
           <Switch>
             <Route path="/login">
               <Login />
+            </Route>
+            <Route path="/dashboard">
+              <Dashboard />
             </Route>
           </Switch>
         </Router> 
