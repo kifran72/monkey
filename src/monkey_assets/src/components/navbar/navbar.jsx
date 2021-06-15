@@ -175,7 +175,7 @@ export default function PrimarySearchAppBar() {
           <p>Notifications</p>
         </MenuItem>
       : <MenuItem> 
-          <Link to="/login" color="inherit">
+          <Link to="/login" color="primary" underline='none'>
                     Connexion
           </Link>
         </MenuItem> 
@@ -187,17 +187,9 @@ export default function PrimarySearchAppBar() {
     <div className={classes.grow}>
       <AppBar position="fixed">
         <Toolbar>
-          <IconButton
-            edge="start"
-            className={classes.menuButton}
-            color="inherit"
-            aria-label="open drawer"
-          >
-            <MenuIcon />
-          </IconButton>
           <Typography className={classes.title} variant="h6" noWrap>
-            <Link to="/" color="inherit">
-                    News
+            <Link to="/" color="primary" underline='none'>
+                Monkey crypto
             </Link>
           </Typography>
           
