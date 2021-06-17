@@ -7,7 +7,7 @@ import {
   Route,
   Link
 } from "react-router-dom";
-import {ethers} from 'ethers';
+import { ethers } from 'ethers';
 
 // Components
 import Navbar from '../navbar/navbar';
@@ -17,15 +17,18 @@ import Login from '../login/login';
 import ContentLogged from '../contentLogged/contentLogged';
 import ContentNotLogged from '../contentNotLogged/contentNotLogged';
 
+
+
+
 export default class Home extends React.Component {
-  constructor (props) {
-        super(props);
-        this.state = {
-          agent: new HttpAgent(),
-          user: null
-        }
-        this.etherJSConnect()
+  constructor(props) {
+    super(props);
+    this.state = {
+      agent: new HttpAgent(),
+      user: null,
     }
+    this.etherJSConnect()
+  }
 
   contracts = async () => {
     const provider = new ethers.providers.Web3Provider(window.ethereum)
@@ -51,14 +54,13 @@ export default class Home extends React.Component {
   etherJSConnect = async () => {
     const provider = new ethers.providers.Web3Provider(window.ethereum)
     const signer = provider.getSigner()
-    const contracts =  await this.contracts();
+    const contracts = await this.contracts();
     const blockNumber = await provider.getBlockNumber();
     const balance = await provider.getBalance("ethers.eth")
     const balancecontracts = await contracts.balanceOf("ricmoo.firefly.eth")
     const daiWithSigner = contracts.connect(signer);
     const dai = ethers.utils.parseUnits("1.0", 18);
     // const tx = await daiWithSigner.transfer("ricmoo.firefly.eth", dai);
-
     // console.log('contracts: ', tx)
 
     console.log('contracts: ', contracts)
@@ -66,34 +68,34 @@ export default class Home extends React.Component {
     console.log('symbol: ', await contracts.symbol())
     console.log('balancecontracts: ', balancecontracts)
     console.log('formatUnits: ', ethers.utils.formatUnits(balance, 18))
-    
+
     console.log('balance non formaté: ', balance)
     console.log('balance formaté: ', ethers.utils.formatEther(balance))
     console.log('Signer: ', signer)
-    console.log('BlockNumber: ',blockNumber)
+    console.log('BlockNumber: ', blockNumber)
     return;
   }
 
-  getMonkey = async ()=> {
+  getMonkey = async () => {
     const greeting = Actor.createActor(monkey_idl, { agent: this.state.agent, canisterId: monkey_id })
     return await greeting.greet('test');
   }
-  
+
   render() {
     return (
       <div>
         <Router>
-         
-         
-          {this.state.user !== null 
-            ?  <Navbar /> 
+
+
+          {this.state.user !== null
+            ? <Navbar />
             : <NavbarNotConnected />
           }
           {/* {this.state.user === null 
             ? <ContentNotLogged /> 
             :  <ContentLogged />
           } */}
-        
+
           {/* SETUP ROUTES */}
           <Switch>
             <Route path="/login">
@@ -103,7 +105,7 @@ export default class Home extends React.Component {
               <Dashboard />
             </Route>
           </Switch>
-        </Router> 
+        </Router>
       </div>
     );
   }

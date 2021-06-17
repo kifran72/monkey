@@ -14,7 +14,7 @@ ul a {
 }
 
 .MuiButton-containedPrimary {
-    background-color: #ffe100 !important;
+    background-color: #68dc08 !important;
 }
 
 .MuiButton-containedPrimary a {
@@ -23,4 +23,9 @@ ul a {
 
 .MuiButton-root {
     text-transform: none !important;
+}
+
+.btn_login {
+    color: #fff !important;
+    margin-right: 1rem !important;
 }

@@ -1,6 +1,6 @@
 import React from 'react';
 import clsx from 'clsx';
-import { fade, makeStyles, useTheme  } from '@material-ui/core/styles';
+import { fade, makeStyles, useTheme } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -26,10 +26,24 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import { Link }  from "react-router-dom";
+import { Link } from "react-router-dom";
+import DashboardIcon from '@material-ui/icons/Dashboard';
+import MonetizationOnIcon from '@material-ui/icons/MonetizationOn';
+import DonutLargeIcon from '@material-ui/icons/DonutLarge';
+import AccountBalanceIcon from '@material-ui/icons/AccountBalance';
+import SettingsIcon from '@material-ui/icons/Settings';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import SwapHorizontalCircleIcon from '@material-ui/icons/SwapHorizontalCircle';
+import ShoppingBasketIcon from '@material-ui/icons/ShoppingBasket';
+import InfoIcon from '@material-ui/icons/Info';
+import MapIcon from '@material-ui/icons/Map';
+import { ConnectDialog } from '../dialog/connect';
+import Connect from '../metamask/metamask'
 
 // Components
 import ContentNotLogged from '../contentNotLogged/contentNotLogged';
+
+
 
 const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
@@ -84,7 +98,7 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(0, 1),
     // necessary for content to be below app bar
     ...theme.mixins.toolbar,
-    justifyContent: 'flex-end',
+    justifyContent: 'space-between',
   },
   content: {
     flexGrow: 1,
@@ -102,10 +116,19 @@ const useStyles = makeStyles((theme) => ({
     }),
     marginLeft: 0,
   },
+
+  solde: {
+    marginLeft: 8,
+  }
+
 }));
 
 export default function PrimarySearchAppBar() {
   let user = null;
+  // let testConnect = Connect();
+  // if (testConnect) {
+  //   user = testConnect;
+  // }
   const classes = useStyles();
   const theme = useTheme();
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -143,21 +166,23 @@ export default function PrimarySearchAppBar() {
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
     <Menu
-        anchorEl={anchorEl}
-        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-        id={menuId}
-        keepMounted
-        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-        open={isMenuOpen}
-        onClose={handleMenuClose}
-      >
-        <MenuItem onClick={handleMenuClose}>Profils</MenuItem> 
-        <MenuItem onClick={handleMenuClose}>Paramètre</MenuItem> 
-      </Menu>
+      anchorEl={anchorEl}
+      anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+      id={menuId}
+      keepMounted
+      transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+      open={isMenuOpen}
+      onClose={handleMenuClose}
+    >
+      <MenuItem onClick={handleMenuClose}>Profils</MenuItem>
+      <MenuItem onClick={handleMenuClose}>Paramètre</MenuItem>
+    </Menu>
   );
 
   const mobileMenuId = 'primary-search-account-menu-mobile';
+
   const renderMobileMenu = (
+
     <Menu
       anchorEl={mobileMoreAnchorEl}
       anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
@@ -167,7 +192,7 @@ export default function PrimarySearchAppBar() {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      { user !== null && 
+      {user !== null &&
         <MenuItem>
           <IconButton aria-label="show 4 new mails" color="inherit">
             <Badge badgeContent={4} color="secondary">
@@ -177,8 +202,8 @@ export default function PrimarySearchAppBar() {
           <p>Messages</p>
         </MenuItem>
       }
-      { user !== null && 
-          <MenuItem onClick={handleProfileMenuOpen}>
+      {user !== null &&
+        <MenuItem onClick={handleProfileMenuOpen}>
           <IconButton
             aria-label="account of current user"
             aria-controls="primary-search-account-menu"
@@ -190,43 +215,43 @@ export default function PrimarySearchAppBar() {
           <p>Profile</p>
         </MenuItem>
       }
-      { user !== null 
-      ? <MenuItem>
+
+
+      {user !== null
+        ? <MenuItem>
           <IconButton aria-label="show 11 new notifications" color="inherit">
             <Badge badgeContent={11} color="secondary">
               <NotificationsIcon />
             </Badge>
           </IconButton>
           <p>Notifications</p>
+
         </MenuItem>
-      : <Button> 
-            <Link to="/login">
-                    Connexion
-            </Link>
-        </Button> 
+        : <ConnectDialog />
       }
+
     </Menu>
   );
 
   return (
     <div className={classes.root}>
       <CssBaseline />
-      <AppBar position="fixed"  className={clsx(classes.appBar, {
-          [classes.appBarShift]: open,
-        })}>
+      <AppBar position="fixed" className={clsx(classes.appBar, {
+        [classes.appBarShift]: open,
+      })}>
         <Toolbar>
-            <IconButton
+          <IconButton
             color="inherit"
             aria-label="open drawer"
             onClick={handleDrawerOpen}
             edge="start"
             className={clsx(classes.menuButton, open && classes.hide)}
-            >
+          >
             <MenuIcon />
           </IconButton>
           <Typography className={classes.title} variant="h6" noWrap>
             <Link to="/">
-                    Enumeria crypto
+              Enumeria crypto
             </Link>
           </Typography>
           <div className={classes.grow} />
@@ -241,7 +266,7 @@ export default function PrimarySearchAppBar() {
                 <NotificationsIcon />
               </Badge>
             </IconButton> */}
-            { user !== null &&
+            {user !== null &&
               <IconButton
                 edge="end"
                 aria-label="account of current user"
@@ -253,8 +278,8 @@ export default function PrimarySearchAppBar() {
                 <AccountCircle />
               </IconButton>
             }
-            { user === null && <Button variant="text"><Link to="/login">Connexion</Link></Button>  }
-            { user === null && <Button variant="contained" color="primary"><Link to="/login">S'inscrire</Link></Button>  }
+            {user === null && <ConnectDialog />}
+            {user === null && <Button variant="contained" color="primary"><Link to="/login">S'inscrire</Link></Button>}
           </div>
           <div className={classes.sectionMobile}>
             <IconButton
@@ -268,6 +293,7 @@ export default function PrimarySearchAppBar() {
             </IconButton>
           </div>
         </Toolbar>
+
       </AppBar>
       {renderMobileMenu}
       {renderMenu}
@@ -281,29 +307,42 @@ export default function PrimarySearchAppBar() {
         }}
       >
         <div className={classes.drawerHeader}>
+
+          <h1 className={classes.solde}>19.27 ENUM</h1>
           <IconButton onClick={handleDrawerClose}>
             {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
           </IconButton>
         </div>
+
         <Divider />
         <List>
-          {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-            <ListItem button key={text}>
-              <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItem>
-          ))}
+
+          <ListItem button>
+            <ListItemIcon><InfoIcon /></ListItemIcon>
+            <ListItemText primary="About us" />
+
+          </ListItem>
+          <ListItem button>
+            <ListItemIcon><MapIcon /></ListItemIcon>
+            <ListItemText primary="ROADMAP" />
+
+          </ListItem>
+          <ListItem button>
+            <ListItemIcon><AccountBalanceIcon /></ListItemIcon>
+            <ListItemText primary="Market" />
+
+          </ListItem>
+          <ListItem button>
+            <ListItemIcon><ShoppingBasketIcon /></ListItemIcon>
+            <ListItemText primary="Products" />
+
+          </ListItem>
         </List>
         <Divider />
-        <List>
-          {['All mail', 'Trash', 'Spam'].map((text, index) => (
-            <ListItem button key={text}>
-              <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItem>
-          ))}
-        </List>
+
+
       </Drawer>
+
       <main
         className={clsx(classes.content, {
           [classes.contentShift]: open,
