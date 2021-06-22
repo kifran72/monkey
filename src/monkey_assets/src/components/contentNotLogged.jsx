@@ -1,8 +1,25 @@
 import React from 'react';
+import { Switch } from "react-router-dom";
+import RouteWithSubRoutes from './routing/routeWithSubRoutes';
+import { Helmet } from 'react-helmet'
 
-function ContentNotLogged() {
+const TITLE = 'Content Not Logged';
+
+function ContentNotLogged({ routes }) {
     return (
-        <h1>Not logged</h1>
+        <>
+            <Helmet>
+                <title>{TITLE}</title>
+            </Helmet>
+            <div>
+                <h1>Not logged</h1>
+                <Switch>
+                    {routes.map((route, i) => (
+                        <RouteWithSubRoutes key={i} {...route} />
+                    ))}
+                </Switch>
+            </div>
+        </>
     )
 }
 
