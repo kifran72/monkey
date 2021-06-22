@@ -1,6 +1,7 @@
-import * as React from 'react';
-import { render } from 'react-dom';
-import './main.css'; // Import custom styles
-import Home from './components/home/home';
+import React from "react";
+import ReactDOM from "react-dom";
+import "./main.css";
+import App from "./components/app/app";
 
-render(<Home />, document.getElementById('app'));
+
+ReactDOM.render(<App />, document.getElementById("app"));
