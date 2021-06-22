@@ -1,4 +1,5 @@
 import React from "react";
+import { Helmet } from 'react-helmet'
 
 // Material
 import clsx from "clsx";
@@ -9,6 +10,7 @@ import NavbarNotConnected from "../navbar/navbarNotConnected";
 import Welcome from "./welcome";
 import ContentNotLogged from "../contentNotLogged";
 
+const TITLE = 'Home';
 const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -44,26 +46,30 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Home = () => {
-  let user = "toto";
+  let user = null;
   const [open] = React.useState(false);
   const classes = useStyles();
 
   return (
-    <div className={classes.root}>
-      <NavbarNotConnected />
-      <main
-        className={clsx(classes.content, {
-          [classes.contentShift]: open,
-        })}
-      >
-        <div className={classes.drawerHeader} />
+    <>
+      <Helmet>
+        <title>{TITLE}</title>
+      </Helmet>
+      <div className={classes.root}>
+        <NavbarNotConnected />
+        <main
+          className={clsx(classes.content, {
+            [classes.contentShift]: open,
+          })}
+        >
+          <div className={classes.drawerHeader} />
 
-        {/* Component a Afficher */}
-        <Welcome />
-      </main>
-    </div>
+          {/* Component a Afficher ou HTML */}
+          <Welcome />
+        </main>
+      </div>
+    </>
   );
 };
 
-document.title = "Home";
 export default Home;

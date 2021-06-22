@@ -1,4 +1,5 @@
 import React from "react";
+import { Helmet } from 'react-helmet'
 
 // Material
 import clsx from "clsx";
@@ -8,6 +9,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import NavbarNotConnected from "../navbar/navbarNotConnected";
 import ContentNotLogged from "../contentNotLogged";
 
+const TITLE = 'About';
 const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
     grow: {
@@ -48,22 +50,27 @@ const About = () => {
     const classes = useStyles();
 
     return (
-        <div className={classes.root}>
-            <NavbarNotConnected />
-            <main
-                className={clsx(classes.content, {
-                    [classes.contentShift]: open,
-                })}
-            >
-                <div className={classes.drawerHeader} />
+        <>
+            <Helmet>
+                <title>{TITLE}</title>
+            </Helmet>
+            <div className={classes.root}>
+                <NavbarNotConnected />
+                <main
+                    className={clsx(classes.content, {
+                        [classes.contentShift]: open,
+                    })}
+                >
+                    <div className={classes.drawerHeader} />
 
-                {/* Component a Afficher */}
-                <section>
+                    {/* Component a Afficher ou HTML */}
                     <h1>A propos de nous</h1>
-                </section>
-            </main>
-        </div>
+                </main>
+            </div>
+        </>
     );
 };
+
+document.title = "About";
 
 export default About;
