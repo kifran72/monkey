@@ -146,6 +146,7 @@ const NavbarNotConnected = (Component) => {
   };
 
   const isMenuOpen = Boolean(anchorEl);
+
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
   const handleProfileMenuOpen = (event) => {
@@ -270,7 +271,7 @@ const NavbarNotConnected = (Component) => {
             <MenuIcon />
           </IconButton>
           <Typography className={classes.title} variant="h6" noWrap>
-            <Link to="/">Enumeria crypto</Link>
+            <Link to="/">DEEL</Link>
           </Typography>
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
@@ -302,6 +303,7 @@ const NavbarNotConnected = (Component) => {
               </Button>
             )}
           </div>
+
           <div className={classes.sectionMobile}>
             <IconButton
               aria-label="show more"
@@ -316,6 +318,9 @@ const NavbarNotConnected = (Component) => {
         </Toolbar>
       </AppBar>
       {renderMobileMenu}
+
+
+      {/* LEFTMENU */}
       {renderMenu}
       <Drawer
         className={classes.drawer}
@@ -324,10 +329,12 @@ const NavbarNotConnected = (Component) => {
         open={open}
         classes={{
           paper: classes.drawerPaper,
-        }}
-      >
+        }}>
+
         <div className={classes.drawerHeader}>
-          <h1 className={classes.solde}>19.27 ENUM</h1>
+
+          {/* <h1 className={classes.solde}></h1> */}
+
           <IconButton onClick={handleDrawerClose}>
             {theme.direction === "ltr" ? (
               <ChevronLeftIcon />
@@ -336,36 +343,50 @@ const NavbarNotConnected = (Component) => {
             )}
           </IconButton>
         </div>
+
         <Divider />
+
         <List>
-          <Link to="/about">
+
+          <Link to="/About">
             <ListItem button>
               <ListItemIcon>
                 <InfoIcon />
               </ListItemIcon>
-              <ListItemText primary="A propos de nous" />
+              <ListItemText primary="About Us" />
             </ListItem>
           </Link>
-          <ListItem button>
-            <ListItemIcon>
-              <MapIcon />
-            </ListItemIcon>
-            <ListItemText primary="ROADMAP" />
-          </ListItem>
-          <ListItem button>
-            <ListItemIcon>
-              <AccountBalanceIcon />
-            </ListItemIcon>
-            <ListItemText primary="Market" />
-          </ListItem>
-          <ListItem button>
-            <ListItemIcon>
-              <ShoppingBasketIcon />
-            </ListItemIcon>
-            <ListItemText primary="Products" />
-          </ListItem>
+          <Link to="/RoadMap">
+            <ListItem button>
+              <ListItemIcon>
+                <MapIcon />
+              </ListItemIcon>
+              <ListItemText primary="RoadMap" />
+            </ListItem>
+          </Link>
+
+          <Link to="/Market">
+            <ListItem button>
+              <ListItemIcon>
+                <AccountBalanceIcon />
+              </ListItemIcon>
+              <ListItemText primary="Market" />
+            </ListItem>
+          </Link>
+
+          <Link to="/Products">
+            <ListItem button>
+              <ListItemIcon>
+                <ShoppingBasketIcon />
+              </ListItemIcon>
+              <ListItemText primary="Products" />
+            </ListItem>
+          </Link>
+
         </List>
+
         <Divider />
+
       </Drawer>
     </section>
   );

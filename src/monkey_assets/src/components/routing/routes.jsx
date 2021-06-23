@@ -3,6 +3,11 @@ import Home from '../home/home';
 import About from '../home/about';
 import Welcome from '../home/welcome';
 import ContentNotLogged from '../contentNotLogged';
+import RoadMap from '../home/roadmap';
+import Market from '../home/market';
+import Products from '../home/products';
+import DashBoard from '../home/dashboard';
+
 
 const Routes = [
     {
@@ -11,8 +16,28 @@ const Routes = [
         exact: true,
     },
     {
-        path: "/about",
+        path: "/About",
         component: About,
+        exact: true,
+    },
+    {
+        path: "/DashBoard",
+        component: DashBoard,
+        exact: true,
+    },
+    {
+        path: "/RoadMap",
+        component: RoadMap,
+        exact: true,
+    },
+    {
+        path: "/Market",
+        component: Market,
+        exact: true,
+    },
+    {
+        path: "/Products",
+        component: Products,
         exact: true,
     },
     {

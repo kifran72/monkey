@@ -7,6 +7,7 @@ import { makeStyles } from "@material-ui/core/styles";
 
 // Components
 import NavbarNotConnected from "../navbar/navbarNotConnected";
+import Navbar from "../navbar/navbar";
 import Welcome from "./welcome";
 import ContentNotLogged from "../contentNotLogged";
 
@@ -46,7 +47,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Home = () => {
-  let user = null;
+
+  let user = null
+
   const [open] = React.useState(false);
   const classes = useStyles();
 
@@ -56,7 +59,11 @@ const Home = () => {
         <title>{TITLE}</title>
       </Helmet>
       <div className={classes.root}>
-        <NavbarNotConnected />
+        {user !== null
+          ? <Navbar />
+          :
+          <NavbarNotConnected />
+        }
         <main
           className={clsx(classes.content, {
             [classes.contentShift]: open,
