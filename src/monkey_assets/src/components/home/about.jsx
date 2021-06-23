@@ -8,6 +8,9 @@ import { makeStyles } from "@material-ui/core/styles";
 // Components
 import NavbarNotConnected from "../navbar/navbarNotConnected";
 import ContentNotLogged from "../contentNotLogged";
+import Image from 'react-bootstrap/Image'
+import BackgroundAbout from "../../assets/about_background.gif";
+import ContainerDimensions from 'react-container-dimensions'
 
 const TITLE = 'About';
 const drawerWidth = 240;
@@ -64,13 +67,18 @@ const About = () => {
                     <div className={classes.drawerHeader} />
 
                     {/* Component a Afficher ou HTML */}
-                    <h1>A propos de nous</h1>
+                    <h1>Discover the ecosystem !</h1>
+                    {/* <img src={BackgroundAbout} alt="" /> */}
+
+
+
                 </main>
             </div>
         </>
+
+
+
     );
 };
-
-document.title = "About";
 
 export default About;

@@ -4,7 +4,7 @@ export default class ContentNotLogged extends React.Component {
     constructor(props) {
         super(props);
     }
-    
+
     render() {
         return (
             <div class="content">

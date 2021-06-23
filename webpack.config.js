@@ -4,7 +4,6 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
 const dfxJson = require("./dfx.json");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-
 // List of all aliases for canisters. This creates the module alias for
 // the `import ... from "@dfinity/ic/canisters/xyz"` where xyz is the name of a
 // canister.
@@ -75,10 +74,7 @@ function generateWebpackConfigForCanister(name, info) {
             rules: [
                 { test: /\.(ts|tsx|jsx)$/, loader: "ts-loader" },
                 { test: /\.css$/, use: ["style-loader", "css-loader"] },
-                // {
-                //     test: /\.css$/i,
-                //     use: [MiniCssExtractPlugin.loader, "css-loader"],
-                // },
+                { test: /\.(png|svg|jpg|jpeg|gif)$/i, type: 'asset/resource' },
             ],
         },
         plugins: [
@@ -106,8 +102,8 @@ function generateWebpackConfigForCanister(name, info) {
 //  as part of this configuration, add them to the section below.
 module.exports = [
     ...Object.entries(dfxJson.canisters)
-    .map(([name, info]) => {
-        return generateWebpackConfigForCanister(name, info);
-    })
-    .filter((x) => !!x),
+        .map(([name, info]) => {
+            return generateWebpackConfigForCanister(name, info);
+        })
+        .filter((x) => !!x),
 ];

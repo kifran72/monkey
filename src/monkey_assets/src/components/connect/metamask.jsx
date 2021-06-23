@@ -13,7 +13,7 @@ let startApp = (provider) => {
     // If the provider returned by detectEthereumProvider is not the same as
     // window.ethereum, something is overwriting it, perhaps another wallet.
     if (provider !== window.ethereum) {
-        console.error("Do you have multiple wallets installed?");
+        console.error("Change Network / Wallet");
     }
     // Access the decentralized web!
 };
@@ -23,10 +23,11 @@ let testConnect = async () => {
     if (provider) {
         startApp(provider); // Initialize your app
     } else {
-        console.log("Please install MetaMask!");
+        console.log("Install MetaMask first!");
     }
 };
 
+//gestion des récups de données user (Balance / Value )
 const Metamask = () => {
     ethereum.request({ method: "eth_requestAccounts" });
 };
