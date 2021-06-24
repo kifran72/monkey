@@ -1,13 +1,15 @@
 import React from 'react';
 import {
-    HashRouter as Router,
     Switch,
-    Link
+    Link,
+    useHistory,
+    useLocation
 } from "react-router-dom";
 import { Actor, HttpAgent } from '@dfinity/agent';
 import { idlFactory as monkey_idl, canisterId as monkey_id } from 'dfx-generated/monkey';
 import Routes from './routing/routes';
 import RouteWithSubRoutes from './routing/routeWithSubRoutes';
+import { PrivateRoute, UseAuth } from './routing/provideAuth';
 
 // DEBUT Material
 import clsx from "clsx";
@@ -42,6 +44,7 @@ import MapIcon from "@material-ui/icons/Map";
 
 // Components
 import Metamask from "./connect/metamask";
+import Dashboard from './home/dashboard';
 
 // Difinity AGENT
 const agent = new HttpAgent();
@@ -142,12 +145,28 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const App = () => {
-    let user = null;
+
     const classes = useStyles();
     const theme = useTheme();
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
     const [open, setOpen] = React.useState(false);
+    let history = useHistory();
+    let location = useLocation();
+    let auth = UseAuth();
+    let user = auth.user;
+    let { from } = location.state || { from: { pathname: "/Dashboard" } };
+
+    let login = () => {
+        auth.signin(() => {
+            history.replace(from);
+        });
+    };
+
+    let logout = () => {
+        handleMenuClose();
+        auth.signout(() => history.push("/"));
+    }
 
     const handleDrawerOpen = () => {
         setOpen(true);
@@ -178,8 +197,6 @@ const App = () => {
         setMobileMoreAnchorEl(event.currentTarget);
     };
 
-
-
     const menuId = "primary-search-account-menu";
     const renderMenu = (
         <Menu
@@ -191,8 +208,9 @@ const App = () => {
             open={isMenuOpen}
             onClose={handleMenuClose}
         >
-            <MenuItem onClick={handleMenuClose}>Profils</MenuItem>
-            <MenuItem onClick={handleMenuClose}>Paramètre</MenuItem>
+            <MenuItem onClick={handleMenuClose}>Profil</MenuItem>
+            <MenuItem onClick={handleMenuClose}>Paramètres</MenuItem>
+            <MenuItem onClick={logout}>Déconnexion</MenuItem>
         </Menu>
     );
 
@@ -227,7 +245,7 @@ const App = () => {
                     >
                         <AccountCircle />
                     </IconButton>
-                    <p>Profile</p>
+                    <p>Profil</p>
                 </MenuItem>
             )}
 
@@ -265,156 +283,158 @@ const App = () => {
         </Menu>
     );
     return (
-        <Router>
-            <div className={classes.root}>
-                <CssBaseline />
-                <AppBar
-                    position="fixed"
-                    className={clsx(classes.appBar, {
-                        [classes.appBarShift]: open,
-                    })}
-                >
-                    <Toolbar>
-                        <IconButton
-                            color="inherit"
-                            aria-label="open drawer"
-                            onClick={handleDrawerOpen}
-                            edge="start"
-                            className={clsx(classes.menuButton, open && classes.hide)}
-                        >
-                            <MenuIcon />
-                        </IconButton>
-                        <Typography className={classes.title} variant="h6" onClick={handleDrawerClose} noWrap>
-                            <Link to="/">DEEL</Link>
-                        </Typography>
-                        <div className={classes.grow} />
-                        <div className={classes.sectionDesktop}>
-                            {user !== null && (
-                                <IconButton
-                                    edge="end"
-                                    aria-label="account of current user"
-                                    aria-controls={menuId}
-                                    aria-haspopup="true"
-                                    onClick={handleProfileMenuOpen}
-                                    color="inherit"
-                                >
-                                    <AccountCircle />
-                                </IconButton>
-                            )}
-                            {user === null && (
-                                <Button
-                                    variant="text"
-                                    className={classes.loginButton}
-                                    color="default"
-                                    onClick={Metamask}
-                                >
-                                    Connexion
-                                </Button>
-                            )}
-                            {user === null && (
-                                <Button variant="contained" color="primary">
-                                    S'inscrire
-                                </Button>
-                            )}
-                        </div>
-
-                        <div className={classes.sectionMobile}>
+        <div className={classes.root}>
+            <CssBaseline />
+            <AppBar
+                position="fixed"
+                className={clsx(classes.appBar, {
+                    [classes.appBarShift]: open,
+                })}
+            >
+                <Toolbar>
+                    <IconButton
+                        color="inherit"
+                        aria-label="open drawer"
+                        onClick={handleDrawerOpen}
+                        edge="start"
+                        className={clsx(classes.menuButton, open && classes.hide)}
+                    >
+                        <MenuIcon />
+                    </IconButton>
+                    <Typography className={classes.title} variant="h6" onClick={handleDrawerClose} noWrap>
+                        <Link to="/">DEEL</Link>
+                    </Typography>
+                    <div className={classes.grow} />
+                    <div className={classes.sectionDesktop}>
+                        {user !== null && (
                             <IconButton
-                                aria-label="show more"
-                                aria-controls={mobileMenuId}
+                                edge="end"
+                                aria-label="account of current user"
+                                aria-controls={menuId}
                                 aria-haspopup="true"
-                                onClick={handleMobileMenuOpen}
+                                onClick={handleProfileMenuOpen}
                                 color="inherit"
                             >
-                                <MoreIcon />
+                                <AccountCircle />
                             </IconButton>
-                        </div>
-                    </Toolbar>
-                </AppBar>
-                {renderMobileMenu}
-
-                {/* LEFTMENU */}
-                {renderMenu}
-                <Drawer
-                    className={classes.drawer}
-                    variant="persistent"
-                    anchor="left"
-                    open={open}
-                    classes={{
-                        paper: classes.drawerPaper,
-                    }}>
-
-                    <div className={classes.drawerHeader}>
-
-                        {/* <h1 className={classes.solde}></h1> */}
-
-                        <IconButton onClick={handleDrawerClose}>
-                            {theme.direction === "ltr" ? (
-                                <ChevronLeftIcon />
-                            ) : (
-                                <ChevronRightIcon />
-                            )}
-                        </IconButton>
+                        )}
+                        {user === null && (
+                            <Button
+                                variant="text"
+                                className={classes.loginButton}
+                                color="default"
+                                onClick={login}
+                            >
+                                Connexion
+                            </Button>
+                        )}
+                        {user === null && (
+                            <Button variant="contained" color="primary">
+                                S'inscrire
+                            </Button>
+                        )}
                     </div>
 
-                    <Divider />
+                    <div className={classes.sectionMobile}>
+                        <IconButton
+                            aria-label="show more"
+                            aria-controls={mobileMenuId}
+                            aria-haspopup="true"
+                            onClick={handleMobileMenuOpen}
+                            color="inherit"
+                        >
+                            <MoreIcon />
+                        </IconButton>
+                    </div>
+                </Toolbar>
+            </AppBar>
+            {renderMobileMenu}
 
-                    <List>
+            {/* LEFTMENU */}
+            {renderMenu}
+            <Drawer
+                className={classes.drawer}
+                variant="persistent"
+                anchor="left"
+                open={open}
+                classes={{
+                    paper: classes.drawerPaper,
+                }}>
 
-                        <Link to="/About">
-                            <ListItem button onClick={handleDrawerClose}>
-                                <ListItemIcon>
-                                    <InfoIcon />
-                                </ListItemIcon>
-                                <ListItemText primary="About Us" />
-                            </ListItem>
-                        </Link>
-                        <Link to="/RoadMap">
-                            <ListItem button onClick={handleDrawerClose}>
-                                <ListItemIcon>
-                                    <MapIcon />
-                                </ListItemIcon>
-                                <ListItemText primary="RoadMap" />
-                            </ListItem>
-                        </Link>
+                <div className={classes.drawerHeader}>
 
-                        <Link to="/Market">
-                            <ListItem button onClick={handleDrawerClose}>
-                                <ListItemIcon>
-                                    <AccountBalanceIcon />
-                                </ListItemIcon>
-                                <ListItemText primary="Market" />
-                            </ListItem>
-                        </Link>
+                    {/* <h1 className={classes.solde}></h1> */}
 
-                        <Link to="/Products">
-                            <ListItem button onClick={handleDrawerClose}>
-                                <ListItemIcon>
-                                    <ShoppingBasketIcon />
-                                </ListItemIcon>
-                                <ListItemText primary="Products" />
-                            </ListItem>
-                        </Link>
+                    <IconButton onClick={handleDrawerClose}>
+                        {theme.direction === "ltr" ? (
+                            <ChevronLeftIcon />
+                        ) : (
+                            <ChevronRightIcon />
+                        )}
+                    </IconButton>
+                </div>
 
-                    </List>
+                <Divider />
 
-                    <Divider />
+                <List>
 
-                </Drawer>
-                <main
-                    className={clsx(classes.content, {
-                        [classes.contentShift]: open,
-                    })}
-                >
-                    <div className={classes.drawerHeader} />
-                    <Switch>
-                        {Routes.map((route, i) => (
-                            <RouteWithSubRoutes key={i} {...route} />
-                        ))}
-                    </Switch>
-                </main>
-            </div>
-        </Router>
+                    <Link to="/About">
+                        <ListItem button onClick={handleDrawerClose}>
+                            <ListItemIcon>
+                                <InfoIcon />
+                            </ListItemIcon>
+                            <ListItemText primary="About Us" />
+                        </ListItem>
+                    </Link>
+                    <Link to="/RoadMap">
+                        <ListItem button onClick={handleDrawerClose}>
+                            <ListItemIcon>
+                                <MapIcon />
+                            </ListItemIcon>
+                            <ListItemText primary="RoadMap" />
+                        </ListItem>
+                    </Link>
+
+                    <Link to="/Market">
+                        <ListItem button onClick={handleDrawerClose}>
+                            <ListItemIcon>
+                                <AccountBalanceIcon />
+                            </ListItemIcon>
+                            <ListItemText primary="Market" />
+                        </ListItem>
+                    </Link>
+
+                    <Link to="/Products">
+                        <ListItem button onClick={handleDrawerClose}>
+                            <ListItemIcon>
+                                <ShoppingBasketIcon />
+                            </ListItemIcon>
+                            <ListItemText primary="Products" />
+                        </ListItem>
+                    </Link>
+
+                </List>
+
+                <Divider />
+
+            </Drawer>
+            <main
+                className={clsx(classes.content, {
+                    [classes.contentShift]: open,
+                })}
+            >
+                <div className={classes.drawerHeader} />
+                <Switch>
+                    {Routes.map((route, i) => (
+                        <RouteWithSubRoutes key={i} {...route} />
+                    ))}
+
+                    <PrivateRoute path="/Dashboard">
+                        <Dashboard />
+                    </PrivateRoute>
+                </Switch>
+            </main>
+        </div>
     )
 }
 

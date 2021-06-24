@@ -1,6 +1,29 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
+import UseAuth from "./userAuth";
+
+
+const AuthButton = () => {
+
+
+  return auth.user ? (
+    <p>
+      Welcome!{" "}
+      <button
+        onClick={() => {
+          auth.signout(() => history.push("/"));
+        }}
+      >
+        Sign out
+      </button>
+    </p>
+  ) : (
+    <p>You are not logged in.</p>
+  );
+}
+
+
 // DEBUT Material
 import clsx from "clsx";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
@@ -130,7 +153,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const NavbarNotConnected = (Component) => {
-  let user = null;
+  let history = useHistory();
+  let auth = UseAuth();
+  let user = auth.user;
   const classes = useStyles();
   const theme = useTheme();
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -179,6 +204,9 @@ const NavbarNotConnected = (Component) => {
     >
       <MenuItem onClick={handleMenuClose}>Profils</MenuItem>
       <MenuItem onClick={handleMenuClose}>Paramètre</MenuItem>
+      <MenuItem onClick={() => {
+        auth.signout(() => history.push("/"));
+      }}>Deconnexion</MenuItem>
     </Menu>
   );
 
