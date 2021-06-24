@@ -11,7 +11,7 @@ import ContentNotLogged from "../contentNotLogged";
 
 const TITLE = 'DashBoard';
 
-const DashBoard = () => {
+const Dashboard = () => {
     let user = "toto";
 
     return (
@@ -24,4 +24,4 @@ const DashBoard = () => {
     );
 };
 
-export default DashBoard;
+export default Dashboard;

@@ -21,11 +21,6 @@ const Routes = [
         exact: true,
     },
     {
-        path: "/DashBoard",
-        component: DashBoard,
-        exact: true,
-    },
-    {
         path: "/RoadMap",
         component: RoadMap,
         exact: true,
