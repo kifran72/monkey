@@ -10,6 +10,7 @@ import { idlFactory as monkey_idl, canisterId as monkey_id } from 'dfx-generated
 import Routes from './routing/routes';
 import RouteWithSubRoutes from './routing/routeWithSubRoutes';
 import { PrivateRoute, UseAuth } from './routing/provideAuth';
+import Session from 'react-session-api'
 
 // DEBUT Material
 import clsx from "clsx";
@@ -154,17 +155,19 @@ const App = () => {
     let history = useHistory();
     let location = useLocation();
     let auth = UseAuth();
-    let user = auth.user;
-    let { from } = location.state || { from: { pathname: "/Dashboard" } };
+    let user = Session.get("user") ? Session.get("user") : null;
+    let { from } = location.state || { from: { pathname: "/" } };
 
     let login = () => {
         auth.signin(() => {
             history.replace(from);
         });
+
     };
 
     let logout = () => {
         handleMenuClose();
+        Session.clear();
         auth.signout(() => history.push("/"));
     }
 
