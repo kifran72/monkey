@@ -39,6 +39,7 @@
         "react-helmet": "^6.1.0",
         "react-router-config": "^5.1.1",
         "react-router-dom": "^5.2.0",
+        "react-session-api": "^1.1.0",
         "recharts": "^2.0.9",
         "style-loader": "^2.0.0",
         "ts-loader": "^9.2.3",
