@@ -1,53 +1,50 @@
 import React, { useContext, createContext, useState, setState } from "react";
 import { Route, Redirect } from "react-router-dom";
 import FakeAuth from "./fakeAuth";
-import detectEthereumProvider from "@metamask/detect-provider";
+import { utils, BigNumber } from "ethers";
+
 import Session from 'react-session-api'
+
 Session.config(true, 0)
 const ethereum = window.ethereum;
-
 const authContext = createContext();
 
-ethereum.on('accountsChanged', (accounts) => {
-    if (accounts[0] === undefined) {
-        Session.clear();
+
+if (typeof window.ethereum !== 'undefined') {
+    ethereum.on('accountsChanged', async (accounts) => {
+        if (accounts[0] === undefined) {
+            Session.clear();
+            window.location.reload();
+        } else {
+            Session.set("userId", accounts[0])
+            let accountBalance = await ethereum.request({ method: 'eth_getBalance', params: [accounts[0], 'latest'], });
+            accountBalance = utils.formatEther(BigNumber.from(accountBalance));
+            Session.set("userBalance", accountBalance);
+            window.location.reload();
+        }
+    });
+
+    ethereum.on('chainChanged', async (chainId) => {
+        let accountBalance = await ethereum.request({ method: 'eth_getBalance', params: [chainId, 'latest'], });
+        accountBalance = utils.formatEther(BigNumber.from(accountBalance));
+        Session.set("userId", chainId);
+        Session.set("userBalance", accountBalance);
         window.location.reload();
-        console.log('ici accountsClear')
-    } else {
-        Session.set("user", accounts[0])
-        window.location.reload();
-        console.log('ici accountsChanged')
-    }
-});
+    });
+}
 
-
-ethereum.on('chainChanged', (chainId) => {
-    Session.set("user", chainId)
-    window.location.reload();
-});
-
-ethereum.on('disconnect', (user) => {
-    Session.clear();
-    console.log('ici disconnect')
-    // window.location.reload();
-});
-
-// let test = ethereum.isConnected();
-
-// if (!test) {
-//     Session.clear();
-//     console.log('notConnected')
-// }
 
 
 const useProvideAuth = () => {
-    const [user, setUser] = useState(Session.get("user"));
-    console.log(user)
+    const [user, setUser] = useState(Session.get("userId"));
     const signin = async (cb) => {
         const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
         const account = accounts[0];
+        let accountBalance = await ethereum.request({ method: 'eth_getBalance', params: [account, 'latest'], });
+        accountBalance = utils.formatEther(BigNumber.from(accountBalance));
         return FakeAuth.signin(() => {
-            Session.set("user", account);
+            Session.set("userId", account);
+            Session.set("userBalance", accountBalance);
             setUser(account);
             cb();
         });

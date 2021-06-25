@@ -1,12 +1,11 @@
 a {
     color: #FFF;
     text-decoration: none;
-  }
+}
 
 ul a {
-    color: black; 
+    color: black;
 }
- 
 
 .MuiAppBar-colorPrimary {
     /* color: #fff; */
@@ -14,7 +13,7 @@ ul a {
 }
 
 .MuiButton-containedPrimary {
-    background-color: #68dc08 !important;
+    background-color: #5ec906 !important;
 }
 
 .MuiButton-containedPrimary a {
