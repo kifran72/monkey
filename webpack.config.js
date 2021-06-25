@@ -74,7 +74,7 @@ function generateWebpackConfigForCanister(name, info) {
             rules: [
                 { test: /\.(ts|tsx|jsx)$/, loader: "ts-loader" },
                 { test: /\.css$/, use: ["style-loader", "css-loader"] },
-                { test: /\.(png|svg|jpg|jpeg|gif)$/i, type: 'asset/resource' },
+                { test: /\.(png|svg|jpg|jpeg|gif)$/i, type: "asset/resource" },
             ],
         },
         plugins: [
@@ -91,10 +91,10 @@ function generateWebpackConfigForCanister(name, info) {
                 linkType: "text/css",
             }),
         ],
-        devServer: {
-            contentBase: path.join(__dirname, "dist"),
-            port: 8000,
-        },
+        // devServer: {
+        //     contentBase: path.join(__dirname, "dist"),
+        //     port: 8000,
+        // },
     };
 }
 
@@ -102,8 +102,8 @@ function generateWebpackConfigForCanister(name, info) {
 //  as part of this configuration, add them to the section below.
 module.exports = [
     ...Object.entries(dfxJson.canisters)
-        .map(([name, info]) => {
-            return generateWebpackConfigForCanister(name, info);
-        })
-        .filter((x) => !!x),
+    .map(([name, info]) => {
+        return generateWebpackConfigForCanister(name, info);
+    })
+    .filter((x) => !!x),
 ];

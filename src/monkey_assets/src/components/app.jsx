@@ -41,6 +41,7 @@ import AccountBalanceIcon from "@material-ui/icons/AccountBalance";
 import ShoppingBasketIcon from "@material-ui/icons/ShoppingBasket";
 import InfoIcon from "@material-ui/icons/Info";
 import MapIcon from "@material-ui/icons/Map";
+import DashboardIcon from '@material-ui/icons/Dashboard';
 // FIN Matérial
 
 // Components
@@ -143,6 +144,10 @@ const useStyles = makeStyles((theme) => ({
         color: "white",
     },
     metamask: {},
+    idAccount: {
+        display: "flex",
+        alignItems: "center"
+    },
 }));
 
 const App = () => {
@@ -155,7 +160,9 @@ const App = () => {
     let history = useHistory();
     let location = useLocation();
     let auth = UseAuth();
-    let user = Session.get("user") ? Session.get("user") : null;
+    let user = Session.get("userId") ? Session.get("userId") : null;
+    let solde = Session.get("userBalance") ? Session.get("userBalance") : null;
+
     let { from } = location.state || { from: { pathname: "/" } };
 
     let login = () => {
@@ -213,7 +220,7 @@ const App = () => {
         >
             <MenuItem onClick={handleMenuClose}>Profil</MenuItem>
             <MenuItem onClick={handleMenuClose}>Paramètres</MenuItem>
-            <MenuItem onClick={logout}>Déconnexion</MenuItem>
+            {/* <MenuItem onClick={logout}>Déconnexion</MenuItem> */}
         </Menu>
     );
 
@@ -310,6 +317,11 @@ const App = () => {
                     <div className={classes.grow} />
                     <div className={classes.sectionDesktop}>
                         {user !== null && (
+                            <Typography className={classes.idAccount} variant="h6" onClick={handleDrawerClose} noWrap>
+                                {user}
+                            </Typography>
+                        )}
+                        {user !== null && (
                             <IconButton
                                 edge="end"
                                 aria-label="account of current user"
@@ -321,7 +333,7 @@ const App = () => {
                                 <AccountCircle />
                             </IconButton>
                         )}
-                        {user === null && (
+                        {/* {user === null && (
                             <Button
                                 variant="text"
                                 className={classes.loginButton}
@@ -330,10 +342,12 @@ const App = () => {
                             >
                                 Connexion
                             </Button>
-                        )}
+                        )} */}
+
+
                         {user === null && (
-                            <Button variant="contained" color="primary">
-                                S'inscrire
+                            <Button variant="contained" color="primary" onClick={login}>
+                                Connexion
                             </Button>
                         )}
                     </div>
@@ -366,7 +380,9 @@ const App = () => {
 
                 <div className={classes.drawerHeader}>
 
-                    {/* <h1 className={classes.solde}></h1> */}
+                    {user !== null &&
+                        <h1 className={classes.solde}>{solde} ETH</h1>
+                    }
 
                     <IconButton onClick={handleDrawerClose}>
                         {theme.direction === "ltr" ? (
@@ -420,18 +436,33 @@ const App = () => {
 
                 <Divider />
 
+                {user !== null &&
+                    <List>
+
+                        <Link to="/Dashboard">
+                            <ListItem button onClick={handleDrawerClose}>
+                                <ListItemIcon>
+                                    <DashboardIcon />
+                                </ListItemIcon>
+                                <ListItemText primary="Dashboard" />
+                            </ListItem>
+                        </Link>
+
+                    </List>
+                }
+
             </Drawer>
             <main
                 className={clsx(classes.content, {
                     [classes.contentShift]: open,
                 })}
+                onClick={handleDrawerClose}
             >
                 <div className={classes.drawerHeader} />
                 <Switch>
                     {Routes.map((route, i) => (
                         <RouteWithSubRoutes key={i} {...route} />
                     ))}
-
                     <PrivateRoute path="/Dashboard">
                         <Dashboard />
                     </PrivateRoute>
