@@ -4,6 +4,8 @@ import { Helmet } from 'react-helmet'
 // Components
 import Welcome from "./welcome";
 
+import Background from '../../../assets/about_backgroundLASTVERSION.gif'
+
 const TITLE = 'Home';
 
 
@@ -15,7 +17,12 @@ const Home = () => {
       <Helmet>
         <title>{TITLE}</title>
       </Helmet>
-      <Welcome />
+      <img src={Background} alt="" className="bannerHome" />
+      <div className="contentHome">
+        <Welcome />
+
+
+      </div>
     </>
   );
 };

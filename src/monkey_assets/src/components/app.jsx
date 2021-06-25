@@ -42,11 +42,25 @@ import ShoppingBasketIcon from "@material-ui/icons/ShoppingBasket";
 import InfoIcon from "@material-ui/icons/Info";
 import MapIcon from "@material-ui/icons/Map";
 import DashboardIcon from '@material-ui/icons/Dashboard';
+import Snackbar from '@material-ui/core/Snackbar';
 // FIN Matérial
+
 
 // Components
 import Metamask from "./connect/metamask";
 import Dashboard from './home/dashboard';
+let options = {
+    chart: {
+        type: 'line'
+    },
+    series: [{
+        name: 'sales',
+        data: [30, 40, 35, 50, 49, 60, 70, 91, 125]
+    }],
+    xaxis: {
+        categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999]
+    }
+}
 
 // Difinity AGENT
 const agent = new HttpAgent();
@@ -109,7 +123,7 @@ const useStyles = makeStyles((theme) => ({
     },
     content: {
         flexGrow: 1,
-        padding: theme.spacing(3),
+        // padding: theme.spacing(3),
         transition: theme.transitions.create("margin", {
             easing: theme.transitions.easing.sharp,
             duration: theme.transitions.duration.leavingScreen,
@@ -151,7 +165,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const App = () => {
-
     const classes = useStyles();
     const theme = useTheme();
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -162,14 +175,29 @@ const App = () => {
     let auth = UseAuth();
     let user = Session.get("userId") ? Session.get("userId") : null;
     let solde = Session.get("userBalance") ? Session.get("userBalance") : null;
-
+    let alertMetamask = Session.get("metamaskNotInstall") ? Session.get("metamaskNotInstall") : null;
     let { from } = location.state || { from: { pathname: "/" } };
+    const [state, setState] = React.useState({
+        openAlertMetamask: false,
+        verticalMetamask: 'top',
+        horizontalMetamask: 'center',
+    });
+
+    const handleClick = (newState) => () => {
+        setState({ openAlertMetamask: true, ...newState });
+    };
+
+    const handleClose = () => {
+        setState({ ...state, openAlertMetamask: false });
+    };
 
     let login = () => {
         auth.signin(() => {
             history.replace(from);
+            if (!alertMetamask) {
+                handleClick({ verticalMetamask: 'top', horizontalMetamask: 'center' })
+            }
         });
-
     };
 
     let logout = () => {
@@ -395,16 +423,7 @@ const App = () => {
 
                 <Divider />
 
-                <List>
-
-                    <Link to="/About">
-                        <ListItem button onClick={handleDrawerClose}>
-                            <ListItemIcon>
-                                <InfoIcon />
-                            </ListItemIcon>
-                            <ListItemText primary="About Us" />
-                        </ListItem>
-                    </Link>
+                <List >
                     <Link to="/RoadMap">
                         <ListItem button onClick={handleDrawerClose}>
                             <ListItemIcon>
@@ -431,14 +450,10 @@ const App = () => {
                             <ListItemText primary="Products" />
                         </ListItem>
                     </Link>
-
                 </List>
-
                 <Divider />
-
                 {user !== null &&
                     <List>
-
                         <Link to="/Dashboard">
                             <ListItem button onClick={handleDrawerClose}>
                                 <ListItemIcon>
@@ -447,10 +462,77 @@ const App = () => {
                                 <ListItemText primary="Dashboard" />
                             </ListItem>
                         </Link>
-
                     </List>
                 }
+                <List >
+                    <Link to="/Dashboard">
+                        <ListItem button onClick={handleDrawerClose}>
+                            <ListItemIcon>
+                                <MapIcon />
+                            </ListItemIcon>
+                            <ListItemText primary="DashBoard" />
+                        </ListItem>
+                    </Link>
 
+                    <Link to="/DeFi">
+                        <ListItem button onClick={handleDrawerClose}>
+                            <ListItemIcon>
+                                <MapIcon />
+                            </ListItemIcon>
+                            <ListItemText primary="DeFi" />
+                        </ListItem>
+                    </Link>
+
+                    <Link to="/Market">
+                        <ListItem button onClick={handleDrawerClose}>
+                            <ListItemIcon>
+                                <AccountBalanceIcon />
+                            </ListItemIcon>
+                            <ListItemText primary="Market" />
+                        </ListItem>
+                    </Link>
+
+                    <Link to="/Products">
+                        <ListItem button onClick={handleDrawerClose}>
+                            <ListItemIcon>
+                                <ShoppingBasketIcon />
+                            </ListItemIcon>
+                            <ListItemText primary="Products" />
+                        </ListItem>
+                    </Link>
+
+                </List>
+
+                <Divider />
+
+                <Link to="/About">
+                    <ListItem button onClick={handleDrawerClose}>
+                        <ListItemIcon>
+                            <InfoIcon />
+                        </ListItemIcon>
+                        <ListItemText primary="About Us" />
+                    </ListItem>
+                </Link>
+
+                <Link to="/Settings">
+                    <ListItem button onClick={handleDrawerClose}>
+                        <ListItemIcon>
+                            <InfoIcon />
+                            <h1>Settings</h1>
+                        </ListItemIcon>
+                        <ListItemText primary="Settings" />
+                    </ListItem>
+                </Link>
+
+                <Link to="/Log Out">
+                    <ListItem button onClick={handleDrawerClose}>
+                        <ListItemIcon>
+                            <InfoIcon />
+                            <h1>Log Out</h1>
+                        </ListItemIcon>
+                        <ListItemText primary="Log Out" />
+                    </ListItem>
+                </Link>
             </Drawer>
             <main
                 className={clsx(classes.content, {
@@ -459,6 +541,13 @@ const App = () => {
                 onClick={handleDrawerClose}
             >
                 <div className={classes.drawerHeader} />
+                {/* <Snackbar
+                    anchorOrigin={{ verticalMetamask, horizontalMetamask }}
+                    open={openAlertMetamask}
+                    onClose={handleClose}
+                    message="Please install Metamask first !"
+                    key={verticalMetamask + horizontalMetamask}
+                /> */}
                 <Switch>
                     {Routes.map((route, i) => (
                         <RouteWithSubRoutes key={i} {...route} />
@@ -467,6 +556,7 @@ const App = () => {
                         <Dashboard />
                     </PrivateRoute>
                 </Switch>
+
             </main>
         </div>
     )

@@ -28,3 +28,13 @@ ul a {
     color: #fff !important;
     margin-right: 1rem !important;
 }
+
+.bannerHome {
+    width: 100%;
+    height: 25rem;
+    object-fit: cover;
+}
+
+.contentHome {
+    padding: 24px !important;
+}

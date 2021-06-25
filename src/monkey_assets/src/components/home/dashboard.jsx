@@ -1,9 +1,11 @@
 import React from "react";
-import { Helmet } from 'react-helmet'
+import { Helmet } from 'react-helmet';
+import ApexCharts from 'apexcharts';
 
 // Material
 import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
+import Snackbar from '@material-ui/core/Snackbar';
 
 // Components
 import NavbarNotConnected from "../navbar/navbarNotConnected";
@@ -11,7 +13,7 @@ import ContentNotLogged from "../contentNotLogged";
 
 const TITLE = 'DashBoard';
 
-const Dashboard = () => {
+const DashBoard = () => {
     let user = "toto";
 
     return (
@@ -20,8 +22,9 @@ const Dashboard = () => {
                 <title>{TITLE}</title>
             </Helmet>
             <h1>Dashboard</h1>
+            <div id="chart"></div>
         </>
     );
 };
 
-export default Dashboard;
+export default DashBoard;
