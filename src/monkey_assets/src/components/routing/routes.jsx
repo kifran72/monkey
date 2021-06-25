@@ -7,7 +7,8 @@ import RoadMap from '../home/roadmap';
 import Market from '../home/market';
 import Products from '../home/products';
 import DashBoard from '../home/dashboard';
-
+import DeFi from '../home/defi';
+import Settings from '../home/settings';
 
 const Routes = [
     {
@@ -18,6 +19,11 @@ const Routes = [
     {
         path: "/About",
         component: About,
+        exact: true,
+    },
+    {
+        path: "/DeFi",
+        component: DeFi,
         exact: true,
     },
     {
@@ -36,15 +42,20 @@ const Routes = [
         exact: true,
     },
     {
-        path: "/test",
-        component: ContentNotLogged,
-        routes: [
-            {
-                path: "/test/welcome",
-                component: Welcome,
-            }
-        ]
-    }
+        path: "/Settings",
+        component: Settings,
+        exact: true,
+    },
+    // {
+    //     path: "/vitrine",
+    //     component: home,
+    //     routes: [
+    //         {
+    //             path: "/test/welcome",
+    //             component: Welcome,
+    //         }
+    //     ]
+    // }
 ];
 
 export default Routes;
