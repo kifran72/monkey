@@ -5,10 +5,12 @@ import Welcome from '../home/welcome';
 import ContentNotLogged from '../contentNotLogged';
 import RoadMap from '../home/roadmap';
 import Market from '../home/market';
-import Products from '../home/products';
+import Products from '../home/grow';
 import DashBoard from '../home/dashboard';
 import DeFi from '../home/defi';
 import Settings from '../home/settings';
+import Grow from '../home/grow';
+import Profile from '../home/profile';
 
 const Routes = [
     {
@@ -37,13 +39,18 @@ const Routes = [
         exact: true,
     },
     {
-        path: "/Products",
-        component: Products,
+        path: "/Grow",
+        component: Grow,
         exact: true,
     },
     {
         path: "/Settings",
         component: Settings,
+        exact: true,
+    },
+    {
+        path: "/Profile",
+        component: Profile,
         exact: true,
     },
     // {
