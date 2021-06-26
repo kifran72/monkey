@@ -43,6 +43,11 @@ import InfoIcon from "@material-ui/icons/Info";
 import MapIcon from "@material-ui/icons/Map";
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import Snackbar from '@material-ui/core/Snackbar';
+import DashboardIcon from '@material-ui/icons/Dashboard';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import SettingsIcon from '@material-ui/icons/Settings';
+import TrendingUpIcon from '@material-ui/icons/TrendingUp';
+import PersonIcon from '@material-ui/icons/Person';
 // FIN Matérial
 
 
@@ -153,6 +158,16 @@ const useStyles = makeStyles((theme) => ({
         color: "black",
         margin: 0,
     },
+    logoutButtonMobile: {
+        backgroundColor: "transparent",
+        color: "black",
+        margin: 0,
+    },
+    logoutButton: {
+        backgroundColor: "transparent",
+        color: "black",
+        margin: 0,
+    },
     about: {
         backgroundColor: "transparent",
         color: "white",
@@ -202,7 +217,8 @@ const App = () => {
 
     let logout = () => {
         handleMenuClose();
-        Session.clear();
+        // Session.clear();
+        // setState({ user=null })
         auth.signout(() => history.push("/"));
     }
 
@@ -236,7 +252,24 @@ const App = () => {
     };
 
     const menuId = "primary-search-account-menu";
+    //   const renderMenu = (
+    //         <Menu
+    //             anchorEl={anchorEl}
+    //             anchorOrigin={{ vertical: "top", horizontal: "right" }}
+    //             id={menuId}
+    //             keepMounted
+    //             transformOrigin={{ vertical: "top", horizontal: "right" }}
+    //             open={isMenuOpen}
+    //             onClose={handleMenuClose}
+    //         >
+    //             <MenuItem onClick={handleMenuClose}>Profil</MenuItem>
+    //             <MenuItem onClick={handleMenuClose}>Paramètres</MenuItem>
+    //             {/* <MenuItem onClick={logout}>Déconnexion</MenuItem> */}
+    //         </Menu>
+    //     );
+
     const renderMenu = (
+
         <Menu
             anchorEl={anchorEl}
             anchorOrigin={{ vertical: "top", horizontal: "right" }}
@@ -246,11 +279,48 @@ const App = () => {
             open={isMenuOpen}
             onClose={handleMenuClose}
         >
-            <MenuItem onClick={handleMenuClose}>Profil</MenuItem>
-            <MenuItem onClick={handleMenuClose}>Paramètres</MenuItem>
-            {/* <MenuItem onClick={logout}>Déconnexion</MenuItem> */}
+            {user !== null && (
+                <MenuItem>
+                    <Link to="/Profile">
+                        <ListItemIcon>
+                            <PersonIcon fontSize="small" />
+                        </ListItemIcon>
+                        <Typography variant="inherit" noWrap>
+                            Profile
+                        </Typography>
+                    </Link>
+                </MenuItem>
+            )}
+
+
+            {user !== null && (
+                <MenuItem>
+                    <Link to="/Settings">
+                        <ListItemIcon>
+                            <SettingsIcon fontSize="small" />
+                        </ListItemIcon>
+                        <Typography variant="inherit" noWrap>
+                            Settings
+                        </Typography>
+                    </Link>
+                </MenuItem>
+            )}
+
+            {user !== null && (
+                <MenuItem onClick={logout}>
+                    <ListItemIcon>
+                        <ExitToAppIcon fontSize="small" />
+                    </ListItemIcon>
+                    <Typography variant="inherit" noWrap>
+                        Log Out
+                    </Typography>
+
+                </MenuItem>
+            )};
         </Menu>
-    );
+
+    )
+
 
     const mobileMenuId = "primary-search-account-menu-mobile";
     const renderMobileMenu = (
@@ -263,63 +333,44 @@ const App = () => {
             open={isMobileMenuOpen}
             onClose={handleMobileMenuClose}
         >
+
             {user !== null && (
                 <MenuItem>
-                    <IconButton aria-label="show 4 new mails" color="inherit">
-                        <Badge badgeContent={4} color="secondary">
-                            <MailIcon />
-                        </Badge>
-                    </IconButton>
-                    <p>Messages</p>
-                </MenuItem>
-            )}
-            {user !== null && (
-                <MenuItem onClick={handleProfileMenuOpen}>
-                    <IconButton
-                        aria-label="account of current user"
-                        aria-controls="primary-search-account-menu"
-                        aria-haspopup="true"
-                        color="inherit"
-                    >
-                        <AccountCircle />
-                    </IconButton>
-                    <p>Profil</p>
+                    <Link to="/Profile">
+                        <IconButton >
+                            <PersonIcon />
+
+                            <p>Profile</p>
+                        </IconButton>
+                    </Link>
                 </MenuItem>
             )}
 
             {user !== null && (
-                <MenuItem>
-                    <IconButton aria-label="show 11 new notifications" color="inherit">
-                        <Badge badgeContent={11} color="secondary">
-                            <NotificationsIcon />
-                        </Badge>
-                    </IconButton>
-                    <p>Notifications</p>
-                </MenuItem>
-            )}
+                <MenuItem >
+                    <Link to='/Settings'>
+                        <IconButton >
+                            <SettingsIcon />
 
-            {user === null && (
-                <MenuItem>
-                    <Button
-                        variant="text"
-                        color="inherit"
-                        className={classes.loginButtonMobile}
-                        fullWidth={true}
-                        onClick={Metamask}
-                    >
-                        Connexion
-                    </Button>
-                </MenuItem>
-            )}
-            {user === null && (
-                <MenuItem>
-                    <Button variant="contained" color="primary">
-                        S'inscrire
-                    </Button>
-                </MenuItem>
-            )}
+                            <p>Settings</p>
+                        </IconButton>
+                    </Link>
+                </MenuItem>)
+            }
+
+            {user !== null && (
+                <MenuItem onClick={logout}>
+                    <Link to='/Settings'>
+                        <IconButton >
+                            <ExitToAppIcon />
+
+                            <p>Log Out</p>
+                        </IconButton>
+                    </Link>
+                </MenuItem>)}
         </Menu>
     );
+
     return (
         <div className={classes.root}>
             <CssBaseline />
@@ -339,11 +390,19 @@ const App = () => {
                     >
                         <MenuIcon />
                     </IconButton>
+
                     <Typography className={classes.title} variant="h6" onClick={handleDrawerClose} noWrap>
                         <Link to="/">DEEL</Link>
                     </Typography>
+
                     <div className={classes.grow} />
+
                     <div className={classes.sectionDesktop}>
+                        {user === null && (
+                            <Button variant="contained" color="primary" onClick={login}>
+                                Connexion
+                            </Button>
+                        )}
                         {user !== null && (
                             <Typography className={classes.idAccount} variant="h6" onClick={handleDrawerClose} noWrap>
                                 {user}
@@ -356,28 +415,12 @@ const App = () => {
                                 aria-controls={menuId}
                                 aria-haspopup="true"
                                 onClick={handleProfileMenuOpen}
-                                color="inherit"
-                            >
+                                color="inherit">
+
                                 <AccountCircle />
                             </IconButton>
                         )}
-                        {/* {user === null && (
-                            <Button
-                                variant="text"
-                                className={classes.loginButton}
-                                color="default"
-                                onClick={login}
-                            >
-                                Connexion
-                            </Button>
-                        )} */}
 
-
-                        {user === null && (
-                            <Button variant="contained" color="primary" onClick={login}>
-                                Connexion
-                            </Button>
-                        )}
                     </div>
 
                     <div className={classes.sectionMobile}>
@@ -394,9 +437,9 @@ const App = () => {
                 </Toolbar>
             </AppBar>
             {renderMobileMenu}
-
-            {/* LEFTMENU */}
             {renderMenu}
+            {/* LEFTMENU */}
+
             <Drawer
                 className={classes.drawer}
                 variant="persistent"
@@ -421,56 +464,16 @@ const App = () => {
                     </IconButton>
                 </div>
 
-                <Divider />
+
 
                 <List >
-                    <Link to="/RoadMap">
-                        <ListItem button onClick={handleDrawerClose}>
-                            <ListItemIcon>
-                                <MapIcon />
-                            </ListItemIcon>
-                            <ListItemText primary="RoadMap" />
-                        </ListItem>
-                    </Link>
 
-                    <Link to="/Market">
-                        <ListItem button onClick={handleDrawerClose}>
-                            <ListItemIcon>
-                                <AccountBalanceIcon />
-                            </ListItemIcon>
-                            <ListItemText primary="Market" />
-                        </ListItem>
-                    </Link>
-
-                    <Link to="/Products">
-                        <ListItem button onClick={handleDrawerClose}>
-                            <ListItemIcon>
-                                <ShoppingBasketIcon />
-                            </ListItemIcon>
-                            <ListItemText primary="Products" />
-                        </ListItem>
-                    </Link>
-                </List>
-                <Divider />
-                {user !== null &&
-                    <List>
-                        <Link to="/Dashboard">
-                            <ListItem button onClick={handleDrawerClose}>
-                                <ListItemIcon>
-                                    <DashboardIcon />
-                                </ListItemIcon>
-                                <ListItemText primary="Dashboard" />
-                            </ListItem>
-                        </Link>
-                    </List>
-                }
-                <List >
                     <Link to="/Dashboard">
                         <ListItem button onClick={handleDrawerClose}>
                             <ListItemIcon>
-                                <MapIcon />
+                                <DashboardIcon />
                             </ListItemIcon>
-                            <ListItemText primary="DashBoard" />
+                            <ListItemText primary="Dashboard" />
                         </ListItem>
                     </Link>
 
@@ -483,6 +486,19 @@ const App = () => {
                         </ListItem>
                     </Link>
 
+                    <Link to="/Grow">
+                        <ListItem button onClick={handleDrawerClose}>
+                            <ListItemIcon>
+                                <TrendingUpIcon />
+                            </ListItemIcon>
+                            <ListItemText primary="Grow" />
+                        </ListItem>
+                    </Link>
+                </List>
+
+                <Divider />
+
+                <List >
                     <Link to="/Market">
                         <ListItem button onClick={handleDrawerClose}>
                             <ListItemIcon>
@@ -491,49 +507,40 @@ const App = () => {
                             <ListItemText primary="Market" />
                         </ListItem>
                     </Link>
-
-                    <Link to="/Products">
-                        <ListItem button onClick={handleDrawerClose}>
-                            <ListItemIcon>
-                                <ShoppingBasketIcon />
-                            </ListItemIcon>
-                            <ListItemText primary="Products" />
-                        </ListItem>
-                    </Link>
-
                 </List>
 
                 <Divider />
 
-                <Link to="/About">
-                    <ListItem button onClick={handleDrawerClose}>
-                        <ListItemIcon>
-                            <InfoIcon />
-                        </ListItemIcon>
-                        <ListItemText primary="About Us" />
-                    </ListItem>
-                </Link>
+                <List >
+                    <Link to="/About">
+                        <ListItem button onClick={handleDrawerClose}>
+                            <ListItemIcon>
+                                <InfoIcon />
+                            </ListItemIcon>
+                            <ListItemText primary="About Us" />
+                        </ListItem>
+                    </Link>
 
-                <Link to="/Settings">
-                    <ListItem button onClick={handleDrawerClose}>
-                        <ListItemIcon>
-                            <InfoIcon />
-                            <h1>Settings</h1>
-                        </ListItemIcon>
-                        <ListItemText primary="Settings" />
-                    </ListItem>
-                </Link>
+                    <Link to="/Settings">
+                        <ListItem button onClick={handleDrawerClose}>
+                            <ListItemIcon>
+                                <SettingsIcon />
+                            </ListItemIcon>
+                            <ListItemText primary="Settings" />
+                        </ListItem>
+                    </Link>
 
-                <Link to="/Log Out">
-                    <ListItem button onClick={handleDrawerClose}>
-                        <ListItemIcon>
-                            <InfoIcon />
-                            <h1>Log Out</h1>
-                        </ListItemIcon>
-                        <ListItemText primary="Log Out" />
-                    </ListItem>
-                </Link>
+                    <Link to="/Log Out">
+                        <ListItem button onClick={handleDrawerClose}>
+                            <ListItemIcon>
+                                <ExitToAppIcon />
+                            </ListItemIcon>
+                            <ListItemText primary="Log Out" />
+                        </ListItem>
+                    </Link>
+                </List>
             </Drawer>
+
             <main
                 className={clsx(classes.content, {
                     [classes.contentShift]: open,

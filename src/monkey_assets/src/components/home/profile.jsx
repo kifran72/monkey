@@ -9,20 +9,20 @@ import { makeStyles } from "@material-ui/core/styles";
 import NavbarNotConnected from "../navbar/navbarNotConnected";
 import ContentNotLogged from "../contentNotLogged";
 
-const TITLE = 'Products';
-const drawerWidth = 240;
+const TITLE = 'Profile';
 
-const Products = () => {
+const Profile = () => {
     let user = "toto";
+
 
     return (
         <>
             <Helmet>
                 <title>{TITLE}</title>
             </Helmet>
-            <h1>Products</h1>
+            <h1>Your profile</h1>
         </>
     );
 };
 
-export default Products;
+export default Profile;
