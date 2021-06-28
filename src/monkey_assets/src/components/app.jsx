@@ -54,18 +54,6 @@ import PersonIcon from '@material-ui/icons/Person';
 // Components
 import Metamask from "./connect/metamask";
 import Dashboard from './home/dashboard';
-let options = {
-    chart: {
-        type: 'line'
-    },
-    series: [{
-        name: 'sales',
-        data: [30, 40, 35, 50, 49, 60, 70, 91, 125]
-    }],
-    xaxis: {
-        categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999]
-    }
-}
 
 // Difinity AGENT
 const agent = new HttpAgent();
@@ -115,9 +103,16 @@ const useStyles = makeStyles((theme) => ({
     drawer: {
         width: drawerWidth,
         flexShrink: 0,
+        [theme.breakpoints.down("sm")]: {
+            flexShrink: "unset",
+            width: 0,
+        },
     },
     drawerPaper: {
         width: drawerWidth,
+        [theme.breakpoints.down("sm")]: {
+            width: "100%",
+        },
     },
     drawerHeader: {
         display: "flex",
@@ -135,6 +130,9 @@ const useStyles = makeStyles((theme) => ({
             duration: theme.transitions.duration.leavingScreen,
         }),
         marginLeft: -drawerWidth,
+        [theme.breakpoints.down("sm")]: {
+            marginLeft: 0,
+        },
     },
     contentShift: {
         transition: theme.transitions.create("margin", {
@@ -304,7 +302,7 @@ const App = () => {
                     </Typography>
 
                 </MenuItem>
-            )};
+            )}
         </Menu>
 
     )
