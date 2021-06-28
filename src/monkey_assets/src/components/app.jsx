@@ -94,6 +94,7 @@ const useStyles = makeStyles((theme) => ({
         }),
     },
     menuButton: {
+
         marginRight: theme.spacing(2),
     },
     sectionDesktop: {
@@ -196,6 +197,7 @@ const App = () => {
         openAlertMetamask: false,
         verticalMetamask: 'top',
         horizontalMetamask: 'center',
+
     });
 
     const handleClick = (newState) => () => {
@@ -252,22 +254,7 @@ const App = () => {
     };
 
     const menuId = "primary-search-account-menu";
-    //   const renderMenu = (
-    //         <Menu
-    //             anchorEl={anchorEl}
-    //             anchorOrigin={{ vertical: "top", horizontal: "right" }}
-    //             id={menuId}
-    //             keepMounted
-    //             transformOrigin={{ vertical: "top", horizontal: "right" }}
-    //             open={isMenuOpen}
-    //             onClose={handleMenuClose}
-    //         >
-    //             <MenuItem onClick={handleMenuClose}>Profil</MenuItem>
-    //             <MenuItem onClick={handleMenuClose}>Paramètres</MenuItem>
-    //             {/* <MenuItem onClick={logout}>Déconnexion</MenuItem> */}
-    //         </Menu>
-    //     );
-
+    // RENDU DESKTOP
     const renderMenu = (
 
         <Menu
@@ -278,6 +265,7 @@ const App = () => {
             transformOrigin={{ vertical: "top", horizontal: "right" }}
             open={isMenuOpen}
             onClose={handleMenuClose}
+            backgroundColor='white'
         >
             {user !== null && (
                 <MenuItem>
@@ -321,56 +309,62 @@ const App = () => {
 
     )
 
-
+    // RENDU MOBILE
     const mobileMenuId = "primary-search-account-menu-mobile";
-    const renderMobileMenu = (
-        <Menu
+    const renderMobileMenu =
+
+        (<Menu
             anchorEl={mobileMoreAnchorEl}
             anchorOrigin={{ vertical: "top", horizontal: "right" }}
             id={mobileMenuId}
             keepMounted
             transformOrigin={{ vertical: "top", horizontal: "right" }}
             open={isMobileMenuOpen}
+            backgroundColor='white'
             onClose={handleMobileMenuClose}
-        >
 
+        >
             {user !== null && (
                 <MenuItem>
                     <Link to="/Profile">
-                        <IconButton >
+                        <ListItemIcon >
                             <PersonIcon />
+                        </ListItemIcon>
+                        <Typography variant="inherit" noWrap>
+                            Profile
+                        </Typography>
 
-                            <p>Profile</p>
-                        </IconButton>
                     </Link>
                 </MenuItem>
             )}
 
             {user !== null && (
-                <MenuItem >
-                    <Link to='/Settings'>
-                        <IconButton >
-                            <SettingsIcon />
+                <MenuItem>
+                    <Link to="/Settings">
+                        <ListItemIcon >
+                            <PersonIcon />
+                        </ListItemIcon>
+                        <Typography variant="inherit" noWrap>
+                            Settings
+                        </Typography>
 
-                            <p>Settings</p>
-                        </IconButton>
                     </Link>
-                </MenuItem>)
-            }
+                </MenuItem>
+            )}
 
             {user !== null && (
                 <MenuItem onClick={logout}>
-                    <Link to='/Settings'>
-                        <IconButton >
-                            <ExitToAppIcon />
 
-                            <p>Log Out</p>
-                        </IconButton>
-                    </Link>
+                    <IconButton >
+                        <ExitToAppIcon />
+                    </IconButton>
+                    <Typography variant="inherit" noWrap>
+                        Log Out
+                    </Typography>
                 </MenuItem>)}
-        </Menu>
-    );
+        </Menu>);
 
+    // NAVBAR (TOP)
     return (
         <div className={classes.root}>
             <CssBaseline />
@@ -397,14 +391,18 @@ const App = () => {
 
                     <div className={classes.grow} />
 
+                    {/* DESKTOP */}
+
                     <div className={classes.sectionDesktop}>
                         {user === null && (
                             <Button variant="contained" color="primary" onClick={login}>
                                 Connexion
                             </Button>
                         )}
+
                         {user !== null && (
                             <Typography className={classes.idAccount} variant="h6" onClick={handleDrawerClose} noWrap>
+
                                 {user}
                             </Typography>
                         )}
@@ -423,22 +421,39 @@ const App = () => {
 
                     </div>
 
+                    {/* MOBILE */}
+
                     <div className={classes.sectionMobile}>
-                        <IconButton
-                            aria-label="show more"
-                            aria-controls={mobileMenuId}
-                            aria-haspopup="true"
-                            onClick={handleMobileMenuOpen}
-                            color="inherit"
-                        >
-                            <MoreIcon />
-                        </IconButton>
+                        {user === null && (
+
+                            <IconButton>
+                                <Button variant="contained" edge='end' color="primary" onClick={login}>
+                                    Connexion
+                                </Button>
+                            </IconButton>
+                        )}
+
+                        {user !== null && (
+                            <IconButton
+                                edge="end"
+                                aria-label="account of current user"
+                                aria-controls={mobileMenuId}
+                                aria-haspopup="true"
+                                onClick={handleProfileMenuOpen}
+                                color="inherit">
+
+                                <AccountCircle />
+                            </IconButton>
+                        )}
+
                     </div>
                 </Toolbar>
             </AppBar>
+
+
             {renderMobileMenu}
             {renderMenu}
-            {/* LEFTMENU */}
+            {/* LEFTMENU - DRAWER*/}
 
             <Drawer
                 className={classes.drawer}
@@ -467,15 +482,16 @@ const App = () => {
 
 
                 <List >
+                    {user !== null && (
+                        <Link to="/Dashboard">
+                            <ListItem button onClick={handleDrawerClose}>
+                                <ListItemIcon>
+                                    <DashboardIcon />
+                                </ListItemIcon>
+                                <ListItemText primary="Dashboard" />
+                            </ListItem>
+                        </Link>)}
 
-                    <Link to="/Dashboard">
-                        <ListItem button onClick={handleDrawerClose}>
-                            <ListItemIcon>
-                                <DashboardIcon />
-                            </ListItemIcon>
-                            <ListItemText primary="Dashboard" />
-                        </ListItem>
-                    </Link>
 
                     <Link to="/DeFi">
                         <ListItem button onClick={handleDrawerClose}>
@@ -485,6 +501,7 @@ const App = () => {
                             <ListItemText primary="DeFi" />
                         </ListItem>
                     </Link>
+
 
                     <Link to="/Grow">
                         <ListItem button onClick={handleDrawerClose}>
@@ -517,27 +534,29 @@ const App = () => {
                             <ListItemIcon>
                                 <InfoIcon />
                             </ListItemIcon>
-                            <ListItemText primary="About Us" />
+                            <ListItemText primary="About DEEL" />
                         </ListItem>
                     </Link>
 
-                    <Link to="/Settings">
-                        <ListItem button onClick={handleDrawerClose}>
-                            <ListItemIcon>
-                                <SettingsIcon />
-                            </ListItemIcon>
-                            <ListItemText primary="Settings" />
-                        </ListItem>
-                    </Link>
+                    {user !== null && (
+                        <Link to="/Settings">
+                            <ListItem button onClick={handleDrawerClose}>
+                                <ListItemIcon>
+                                    <SettingsIcon />
+                                </ListItemIcon>
+                                <ListItemText primary="Settings" />
+                            </ListItem>
+                        </Link>)}
 
-                    <Link to="/Log Out">
-                        <ListItem button onClick={handleDrawerClose}>
-                            <ListItemIcon>
-                                <ExitToAppIcon />
-                            </ListItemIcon>
-                            <ListItemText primary="Log Out" />
-                        </ListItem>
-                    </Link>
+                    {user !== null && (
+                        <Link to="/Log Out">
+                            <ListItem button onClick={handleDrawerClose}>
+                                <ListItemIcon>
+                                    <ExitToAppIcon />
+                                </ListItemIcon>
+                                <ListItemText primary="Log Out" />
+                            </ListItem>
+                        </Link>)}
                 </List>
             </Drawer>
 
