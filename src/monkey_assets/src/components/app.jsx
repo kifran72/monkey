@@ -1,7 +1,6 @@
 import React from 'react';
 import {
     Switch,
-    Link,
     useHistory,
     useLocation
 } from "react-router-dom";
@@ -15,45 +14,16 @@ import Session from 'react-session-api'
 // DEBUT Material
 import clsx from "clsx";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
-import Drawer from "@material-ui/core/Drawer";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import IconButton from "@material-ui/core/IconButton";
-import Typography from "@material-ui/core/Typography";
-import Badge from "@material-ui/core/Badge";
-import Button from "@material-ui/core/Button";
-import MenuItem from "@material-ui/core/MenuItem";
-import Menu from "@material-ui/core/Menu";
-import MenuIcon from "@material-ui/icons/Menu";
-import AccountCircle from "@material-ui/icons/AccountCircle";
-import MailIcon from "@material-ui/icons/Mail";
-import NotificationsIcon from "@material-ui/icons/Notifications";
-import MoreIcon from "@material-ui/icons/MoreVert";
-import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
-import ChevronRightIcon from "@material-ui/icons/ChevronRight";
-import Divider from "@material-ui/core/Divider";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
 import CssBaseline from "@material-ui/core/CssBaseline";
-import AccountBalanceIcon from "@material-ui/icons/AccountBalance";
-import ShoppingBasketIcon from "@material-ui/icons/ShoppingBasket";
-import InfoIcon from "@material-ui/icons/Info";
-import MapIcon from "@material-ui/icons/Map";
-import DashboardIcon from '@material-ui/icons/Dashboard';
-import Snackbar from '@material-ui/core/Snackbar';
-import DashboardIcon from '@material-ui/icons/Dashboard';
-import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-import SettingsIcon from '@material-ui/icons/Settings';
-import TrendingUpIcon from '@material-ui/icons/TrendingUp';
-import PersonIcon from '@material-ui/icons/Person';
 // FIN Matérial
-
 
 // Components
 import Metamask from "./connect/metamask";
 import Dashboard from './home/dashboard';
+import NavbarDefault from './navbar/navbarDefault';
+import DrawerDefault from './drawer/drawerDefault';
+import MenuNavDefault from './menuNav/menuNavDefault';
+import MenuNavMobile from './menuNav/menuNavMobile';
 
 // Difinity AGENT
 const agent = new HttpAgent();
@@ -180,22 +150,18 @@ const useStyles = makeStyles((theme) => ({
 
 const App = () => {
     const classes = useStyles();
-    const theme = useTheme();
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
     const [open, setOpen] = React.useState(false);
     let history = useHistory();
     let location = useLocation();
     let auth = UseAuth();
-    let user = Session.get("userId") ? Session.get("userId") : null;
-    let solde = Session.get("userBalance") ? Session.get("userBalance") : null;
     let alertMetamask = Session.get("metamaskNotInstall") ? Session.get("metamaskNotInstall") : null;
     let { from } = location.state || { from: { pathname: "/" } };
     const [state, setState] = React.useState({
         openAlertMetamask: false,
         verticalMetamask: 'top',
         horizontalMetamask: 'center',
-
     });
 
     const handleClick = (newState) => () => {
@@ -206,7 +172,7 @@ const App = () => {
         setState({ ...state, openAlertMetamask: false });
     };
 
-    let login = () => {
+    const login = () => {
         auth.signin(() => {
             history.replace(from);
             if (!alertMetamask) {
@@ -215,7 +181,7 @@ const App = () => {
         });
     };
 
-    let logout = () => {
+    const logout = () => {
         handleMenuClose();
         // Session.clear();
         // setState({ user=null })
@@ -229,10 +195,6 @@ const App = () => {
     const handleDrawerClose = () => {
         setOpen(false);
     };
-
-    const isMenuOpen = Boolean(anchorEl);
-
-    const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
     const handleProfileMenuOpen = (event) => {
         setAnchorEl(event.currentTarget);
@@ -251,313 +213,16 @@ const App = () => {
         setMobileMoreAnchorEl(event.currentTarget);
     };
 
-    const menuId = "primary-search-account-menu";
-    // RENDU DESKTOP
-    const renderMenu = (
-
-        <Menu
-            anchorEl={anchorEl}
-            anchorOrigin={{ vertical: "top", horizontal: "right" }}
-            id={menuId}
-            keepMounted
-            transformOrigin={{ vertical: "top", horizontal: "right" }}
-            open={isMenuOpen}
-            onClose={handleMenuClose}
-            backgroundColor='white'
-        >
-            {user !== null && (
-                <MenuItem>
-                    <Link to="/Profile">
-                        <ListItemIcon>
-                            <PersonIcon fontSize="small" />
-                        </ListItemIcon>
-                        <Typography variant="inherit" noWrap>
-                            Profile
-                        </Typography>
-                    </Link>
-                </MenuItem>
-            )}
-
-
-            {user !== null && (
-                <MenuItem>
-                    <Link to="/Settings">
-                        <ListItemIcon>
-                            <SettingsIcon fontSize="small" />
-                        </ListItemIcon>
-                        <Typography variant="inherit" noWrap>
-                            Settings
-                        </Typography>
-                    </Link>
-                </MenuItem>
-            )}
-
-            {user !== null && (
-                <MenuItem onClick={logout}>
-                    <ListItemIcon>
-                        <ExitToAppIcon fontSize="small" />
-                    </ListItemIcon>
-                    <Typography variant="inherit" noWrap>
-                        Log Out
-                    </Typography>
-
-                </MenuItem>
-            )}
-        </Menu>
-
-    )
-
-    // RENDU MOBILE
-    const mobileMenuId = "primary-search-account-menu-mobile";
-    const renderMobileMenu =
-
-        (<Menu
-            anchorEl={mobileMoreAnchorEl}
-            anchorOrigin={{ vertical: "top", horizontal: "right" }}
-            id={mobileMenuId}
-            keepMounted
-            transformOrigin={{ vertical: "top", horizontal: "right" }}
-            open={isMobileMenuOpen}
-            backgroundColor='white'
-            onClose={handleMobileMenuClose}
-
-        >
-            {user !== null && (
-                <MenuItem>
-                    <Link to="/Profile">
-                        <ListItemIcon >
-                            <PersonIcon />
-                        </ListItemIcon>
-                        <Typography variant="inherit" noWrap>
-                            Profile
-                        </Typography>
-
-                    </Link>
-                </MenuItem>
-            )}
-
-            {user !== null && (
-                <MenuItem>
-                    <Link to="/Settings">
-                        <ListItemIcon >
-                            <PersonIcon />
-                        </ListItemIcon>
-                        <Typography variant="inherit" noWrap>
-                            Settings
-                        </Typography>
-
-                    </Link>
-                </MenuItem>
-            )}
-
-            {user !== null && (
-                <MenuItem onClick={logout}>
-
-                    <IconButton >
-                        <ExitToAppIcon />
-                    </IconButton>
-                    <Typography variant="inherit" noWrap>
-                        Log Out
-                    </Typography>
-                </MenuItem>)}
-        </Menu>);
 
     // NAVBAR (TOP)
     return (
         <div className={classes.root}>
             <CssBaseline />
-            <AppBar
-                position="fixed"
-                className={clsx(classes.appBar, {
-                    [classes.appBarShift]: open,
-                })}
-            >
-                <Toolbar>
-                    <IconButton
-                        color="inherit"
-                        aria-label="open drawer"
-                        onClick={handleDrawerOpen}
-                        edge="start"
-                        className={clsx(classes.menuButton, open && classes.hide)}
-                    >
-                        <MenuIcon />
-                    </IconButton>
-
-                    <Typography className={classes.title} variant="h6" onClick={handleDrawerClose} noWrap>
-                        <Link to="/">DEEL</Link>
-                    </Typography>
-
-                    <div className={classes.grow} />
-
-                    {/* DESKTOP */}
-
-                    <div className={classes.sectionDesktop}>
-                        {user === null && (
-                            <Button variant="contained" color="primary" onClick={login}>
-                                Connexion
-                            </Button>
-                        )}
-
-                        {user !== null && (
-                            <Typography className={classes.idAccount} variant="h6" onClick={handleDrawerClose} noWrap>
-
-                                {user}
-                            </Typography>
-                        )}
-                        {user !== null && (
-                            <IconButton
-                                edge="end"
-                                aria-label="account of current user"
-                                aria-controls={menuId}
-                                aria-haspopup="true"
-                                onClick={handleProfileMenuOpen}
-                                color="inherit">
-
-                                <AccountCircle />
-                            </IconButton>
-                        )}
-
-                    </div>
-
-                    {/* MOBILE */}
-
-                    <div className={classes.sectionMobile}>
-                        {user === null && (
-
-                            <IconButton>
-                                <Button variant="contained" edge='end' color="primary" onClick={login}>
-                                    Connexion
-                                </Button>
-                            </IconButton>
-                        )}
-
-                        {user !== null && (
-                            <IconButton
-                                edge="end"
-                                aria-label="account of current user"
-                                aria-controls={mobileMenuId}
-                                aria-haspopup="true"
-                                onClick={handleProfileMenuOpen}
-                                color="inherit">
-
-                                <AccountCircle />
-                            </IconButton>
-                        )}
-
-                    </div>
-                </Toolbar>
-            </AppBar>
-
-
-            {renderMobileMenu}
-            {renderMenu}
+            <NavbarDefault login={login} open={open} handleDrawerOpen={handleDrawerOpen} handleMobileMenuOpen={handleMobileMenuOpen} handleProfileMenuOpen={handleProfileMenuOpen} handleMenuClose={handleMenuClose} />
+            <MenuNavMobile logout={logout} mobileMoreAnchorEl={mobileMoreAnchorEl} handleMobileMenuClose={handleMobileMenuClose} />
+            <MenuNavDefault logout={logout} anchorEl={anchorEl} handleMenuClose={handleMenuClose} />
             {/* LEFTMENU - DRAWER*/}
-
-            <Drawer
-                className={classes.drawer}
-                variant="persistent"
-                anchor="left"
-                open={open}
-                classes={{
-                    paper: classes.drawerPaper,
-                }}>
-
-                <div className={classes.drawerHeader}>
-
-                    {user !== null &&
-                        <h1 className={classes.solde}>{solde} ETH</h1>
-                    }
-
-                    <IconButton onClick={handleDrawerClose}>
-                        {theme.direction === "ltr" ? (
-                            <ChevronLeftIcon />
-                        ) : (
-                            <ChevronRightIcon />
-                        )}
-                    </IconButton>
-                </div>
-
-
-
-                <List >
-                    {user !== null && (
-                        <Link to="/Dashboard">
-                            <ListItem button onClick={handleDrawerClose}>
-                                <ListItemIcon>
-                                    <DashboardIcon />
-                                </ListItemIcon>
-                                <ListItemText primary="Dashboard" />
-                            </ListItem>
-                        </Link>)}
-
-
-                    <Link to="/DeFi">
-                        <ListItem button onClick={handleDrawerClose}>
-                            <ListItemIcon>
-                                <MapIcon />
-                            </ListItemIcon>
-                            <ListItemText primary="DeFi" />
-                        </ListItem>
-                    </Link>
-
-
-                    <Link to="/Grow">
-                        <ListItem button onClick={handleDrawerClose}>
-                            <ListItemIcon>
-                                <TrendingUpIcon />
-                            </ListItemIcon>
-                            <ListItemText primary="Grow" />
-                        </ListItem>
-                    </Link>
-                </List>
-
-                <Divider />
-
-                <List >
-                    <Link to="/Market">
-                        <ListItem button onClick={handleDrawerClose}>
-                            <ListItemIcon>
-                                <AccountBalanceIcon />
-                            </ListItemIcon>
-                            <ListItemText primary="Market" />
-                        </ListItem>
-                    </Link>
-                </List>
-
-                <Divider />
-
-                <List >
-                    <Link to="/About">
-                        <ListItem button onClick={handleDrawerClose}>
-                            <ListItemIcon>
-                                <InfoIcon />
-                            </ListItemIcon>
-                            <ListItemText primary="About DEEL" />
-                        </ListItem>
-                    </Link>
-
-                    {user !== null && (
-                        <Link to="/Settings">
-                            <ListItem button onClick={handleDrawerClose}>
-                                <ListItemIcon>
-                                    <SettingsIcon />
-                                </ListItemIcon>
-                                <ListItemText primary="Settings" />
-                            </ListItem>
-                        </Link>)}
-
-                    {user !== null && (
-                        <Link to="/Log Out">
-                            <ListItem button onClick={handleDrawerClose}>
-                                <ListItemIcon>
-                                    <ExitToAppIcon />
-                                </ListItemIcon>
-                                <ListItemText primary="Log Out" />
-                            </ListItem>
-                        </Link>)}
-                </List>
-            </Drawer>
-
+            <DrawerDefault open={open} handleDrawerClose={handleDrawerClose} />
             <main
                 className={clsx(classes.content, {
                     [classes.contentShift]: open,
