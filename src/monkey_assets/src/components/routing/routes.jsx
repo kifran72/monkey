@@ -11,6 +11,8 @@ import DeFi from '../home/defi';
 import Settings from '../home/settings';
 import Grow from '../home/grow';
 import Profile from '../home/profile';
+import Grow2 from '../home/grow2';
+
 
 const Routes = [
     {
@@ -43,6 +45,7 @@ const Routes = [
         component: Grow,
         exact: true,
     },
+
     {
         path: "/Settings",
         component: Settings,

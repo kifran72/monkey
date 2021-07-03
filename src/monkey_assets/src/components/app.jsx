@@ -354,7 +354,6 @@ const App = () => {
 
             {user !== null && (
                 <MenuItem onClick={logout}>
-
                     <IconButton >
                         <ExitToAppIcon />
                     </IconButton>
