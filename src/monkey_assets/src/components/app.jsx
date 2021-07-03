@@ -222,7 +222,7 @@ const App = () => {
             <MenuNavMobile logout={logout} mobileMoreAnchorEl={mobileMoreAnchorEl} handleMobileMenuClose={handleMobileMenuClose} />
             <MenuNavDefault logout={logout} anchorEl={anchorEl} handleMenuClose={handleMenuClose} />
             {/* LEFTMENU - DRAWER*/}
-            <DrawerDefault open={open} handleDrawerClose={handleDrawerClose} />
+            <DrawerDefault open={open} handleDrawerClose={handleDrawerClose} logout={logout} />
             <main
                 className={clsx(classes.content, {
                     [classes.contentShift]: open,
@@ -230,13 +230,7 @@ const App = () => {
                 onClick={handleDrawerClose}
             >
                 <div className={classes.drawerHeader} />
-                {/* <Snackbar
-                    anchorOrigin={{ verticalMetamask, horizontalMetamask }}
-                    open={openAlertMetamask}
-                    onClose={handleClose}
-                    message="Please install Metamask first !"
-                    key={verticalMetamask + horizontalMetamask}
-                /> */}
+
                 <Switch>
                     {Routes.map((route, i) => (
                         <RouteWithSubRoutes key={i} {...route} />

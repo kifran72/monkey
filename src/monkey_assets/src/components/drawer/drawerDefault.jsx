@@ -172,7 +172,7 @@ const DrawerDefault = (props) => {
     const handleDrawerClose = props.handleDrawerClose;
     let user = Session.get("userId") ? Session.get("userId") : null;
     let solde = Session.get("userBalance") ? Session.get("userBalance") : null;
-
+    const logout = props.logout;
     return (
         <Drawer
             className={classes.drawer}
@@ -268,14 +268,14 @@ const DrawerDefault = (props) => {
                     </Link>)}
 
                 {user !== null && (
-                    <Link to="/Log Out">
-                        <ListItem button onClick={handleDrawerClose}>
-                            <ListItemIcon>
-                                <ExitToAppIcon />
-                            </ListItemIcon>
-                            <ListItemText primary="Log Out" />
-                        </ListItem>
-                    </Link>)}
+
+                    <ListItem button onClick={handleDrawerClose, logout}>
+                        <ListItemIcon>
+                            <ExitToAppIcon />
+                        </ListItemIcon>
+                        <ListItemText primary="Log Out" />
+                    </ListItem>
+                )}
             </List>
         </Drawer>
     )
