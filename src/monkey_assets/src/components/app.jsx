@@ -4,8 +4,10 @@ import {
     useHistory,
     useLocation
 } from "react-router-dom";
+
 import { Actor, HttpAgent } from '@dfinity/agent';
 import { idlFactory as monkey_idl, canisterId as monkey_id } from 'dfx-generated/monkey';
+
 import Routes from './routing/routes';
 import RouteWithSubRoutes from './routing/routeWithSubRoutes';
 import { PrivateRoute, UseAuth } from './routing/provideAuth';
@@ -24,6 +26,11 @@ import NavbarDefault from './navbar/navbarDefault';
 import DrawerDefault from './drawer/drawerDefault';
 import MenuNavDefault from './menuNav/menuNavDefault';
 import MenuNavMobile from './menuNav/menuNavMobile';
+import BinanceService from './services/binance';
+
+let mesCouilles = new BinanceService();
+
+mesCouilles.showData();
 
 // Difinity AGENT
 const agent = new HttpAgent();
