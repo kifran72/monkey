@@ -18,7 +18,7 @@
         "stream-browserify": "3.0.0",
         "terser-webpack-plugin": "5.1.1",
         "util": "0.12.3",
-        "webpack": "5.24.4",
+        "webpack": "^5.24.4",
         "webpack-cli": "4.5.0",
         "webpack-dev-server": "^3.11.2"
     },
@@ -33,6 +33,7 @@
         "@uniswap/v2-core": "^1.0.1",
         "@uniswap/v2-periphery": "^1.1.0-beta.0",
         "apexcharts": "^3.27.1",
+        "axios": "^0.21.1",
         "copy-webpack-plugin": "^9.0.0",
         "css-loader": "^5.2.6",
         "ethers": "^5.3.1",
