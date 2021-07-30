@@ -1,41 +1,20 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { PrivateRoute, UseAuth } from '../routing/provideAuth';
 import Session from 'react-session-api';
 
 // DEBUT Material
 import clsx from "clsx";
-import { makeStyles, useTheme } from "@material-ui/core/styles";
-import Drawer from "@material-ui/core/Drawer";
+import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
-import Badge from "@material-ui/core/Badge";
 import Button from "@material-ui/core/Button";
-import MenuItem from "@material-ui/core/MenuItem";
-import Menu from "@material-ui/core/Menu";
 import MenuIcon from "@material-ui/icons/Menu";
 import AccountCircle from "@material-ui/icons/AccountCircle";
-import MailIcon from "@material-ui/icons/Mail";
-import NotificationsIcon from "@material-ui/icons/Notifications";
-import MoreIcon from "@material-ui/icons/MoreVert";
-import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
-import ChevronRightIcon from "@material-ui/icons/ChevronRight";
-import Divider from "@material-ui/core/Divider";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import AccountBalanceIcon from "@material-ui/icons/AccountBalance";
-import ShoppingBasketIcon from "@material-ui/icons/ShoppingBasket";
-import InfoIcon from "@material-ui/icons/Info";
-import MapIcon from "@material-ui/icons/Map";
 // FIN Matérial
 
 // Components
-import Metamask from "../connect/metamask";
 
 const drawerWidth = 240;
 
@@ -142,6 +121,7 @@ const NavbarDefault = (props) => {
   const handleDrawerOpen = props.handleDrawerOpen;
   const handleDrawerClose = props.handleDrawerClose;
   const handleProfileMenuOpen = props.handleProfileMenuOpen;
+  const handleClickSnack = props.handleClickSnack;
 
   return (
     <AppBar
@@ -170,18 +150,8 @@ const NavbarDefault = (props) => {
         {/* DESKTOP */}
 
         <div className={classes.sectionDesktop}>
-          {user === null && (
-            <Button variant="contained" color="primary" onClick={login}>
-              Connexion
-            </Button>
-          )}
+          {user === null && (<Button variant="contained" color="primary" onClick={login} >Connexion</Button>)}
 
-          {user !== null && (
-            <Typography className={classes.idAccount} variant="h6" onClick={handleDrawerClose} noWrap>
-
-              {user}
-            </Typography>
-          )}
           {user !== null && (
             <IconButton
               edge="end"

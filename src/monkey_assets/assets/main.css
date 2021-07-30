@@ -1,0 +1,55 @@
+a {
+    color: #FFF;
+    text-decoration: none;
+}
+
+ul a {
+    color: black;
+}
+
+.btn_login {
+    color: #fff !important;
+    margin-right: 1rem !important;
+}
+
+.bannerHome {
+    width: 100%;
+    height: 25rem;
+    object-fit: cover;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    padding: 24px !important;
+    align-items: center;
+}
+
+
+/* .apexcharts-canvas {
+    width: 100% !important;
+} */
+
+
+/* Material */
+
+.MuiAppBar-colorPrimary {
+    /* color: #fff; */
+    background-color: black !important;
+}
+
+.MuiButton-containedPrimary {
+    background-color: #5ec906 !important;
+}
+
+.MuiButton-containedPrimary a {
+    color: black !important;
+}
+
+.MuiButton-root {
+    text-transform: none !important;
+}
+
+.MuiListItemIcon-root {
+    min-width: 30px !important;
+}

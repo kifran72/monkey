@@ -3,31 +3,43 @@ import { Route, Redirect } from "react-router-dom";
 import FakeAuth from "./fakeAuth";
 import { utils, BigNumber } from "ethers";
 import Session from 'react-session-api'
+import Web3 from 'web3';
 
+let web3 = new Web3(Web3.givenProvider || "ws://localhost:8000");
+console.log(web3);
 const authContext = createContext();
 
 if (typeof window.ethereum !== 'undefined') {
     Session.config(true, 0)
     const ethereum = window.ethereum;
+
     ethereum.on('accountsChanged', async (accounts) => {
         if (accounts[0] === undefined) {
             Session.clear();
             window.location.reload();
         } else {
-            Session.clear();
             let accountBalance = await ethereum.request({ method: 'eth_getBalance', params: [accounts[0], 'latest'], });
             accountBalance = utils.formatEther(BigNumber.from(accountBalance));
             Session.set("userId", accounts[0])
-            Session.set("userBalance", accountBalance);
+            let format = Number((parseFloat(accountBalance)).toFixed(6));
+            Session.set("userBalance", format);
             window.location.reload();
         }
     });
+
     ethereum.on('chainChanged', async (chainId) => {
         const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
         let accountBalance = await ethereum.request({ method: 'eth_getBalance', params: [chainId, 'latest'], });
         accountBalance = utils.formatEther(BigNumber.from(accountBalance));
         Session.set("userId", chainId);
-        Session.set("userBalance", accountBalance);
+        let format = Number((parseFloat(accountBalance)).toFixed(6));
+        Session.set("userBalance", format);
+        window.location.reload();
+    });
+
+
+    ethereum.on('disconnect', () => {
+        Session.clear();
         window.location.reload();
     });
 }
@@ -44,9 +56,10 @@ const useProvideAuth = () => {
             const account = accounts[0];
             let accountBalance = await ethereum.request({ method: 'eth_getBalance', params: [account, 'latest'], });
             accountBalance = utils.formatEther(BigNumber.from(accountBalance));
+            let format = Number((parseFloat(accountBalance)).toFixed(6));
             return FakeAuth.signin(() => {
                 Session.set("userId", account);
-                Session.set("userBalance", accountBalance);
+                Session.set("userBalance", format);
                 setUser(account);
                 cb();
             });
