@@ -5,8 +5,16 @@ import {
     useLocation
 } from "react-router-dom";
 
-import { Actor, HttpAgent } from '@dfinity/agent';
-import { idlFactory as monkey_idl, canisterId as monkey_id } from 'dfx-generated/monkey';
+import { monkey } from "../../../declarations/monkey";
+
+// document.getElementById("clickMeBtn").addEventListener("click", async () => {
+//     const name = document.getElementById("name").value.toString();
+//     // Interact with toto actor, calling the greet method
+//     const greeting = await monkey.greet(name);
+
+//     document.getElementById("greeting").innerText = greeting;
+// });
+
 
 import Routes from './routing/routes';
 import RouteWithSubRoutes from './routing/routeWithSubRoutes';
@@ -15,26 +23,24 @@ import Session from 'react-session-api'
 
 // DEBUT Material
 import clsx from "clsx";
-import { makeStyles, useTheme } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
+import Slide from '@material-ui/core/Slide';
 // FIN Matérial
 
+
 // Components
-import Metamask from "./connect/metamask";
 import Dashboard from './home/dashboard';
 import NavbarDefault from './navbar/navbarDefault';
 import DrawerDefault from './drawer/drawerDefault';
 import MenuNavDefault from './menuNav/menuNavDefault';
 import MenuNavMobile from './menuNav/menuNavMobile';
+import SnackbarDefault from './snackbar/snackbarLogin';
 import BinanceService from './services/binance';
 
 let mesCouilles = new BinanceService();
 
-mesCouilles.showData();
-
-// Difinity AGENT
-const agent = new HttpAgent();
-const greeting = Actor.createActor(monkey_idl, { agent: agent, canisterId: monkey_id })
+// mesCouilles.showData();
 
 const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
@@ -155,7 +161,17 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
+const TransitionUp = (props) => {
+    return <Slide {...props} direction="up" />;
+}
+
 const App = () => {
+    // let name = 'toto';
+    // async function doGreet() {
+    //     const greeting = await monkey.greet(name);
+    //     setMessage(greeting);
+    // }
+    const user = Session.get("userId") ? Session.get("userId") : null;
     const classes = useStyles();
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
@@ -170,6 +186,19 @@ const App = () => {
         verticalMetamask: 'top',
         horizontalMetamask: 'center',
     });
+    const [openSnack, setOpenSnack] = React.useState(false);
+    const [transitionSnack, setTransitionSnack] = React.useState(undefined);
+    let contentSnack = user !== null ? 'Bienvenue !' : 'Choisissez un compte';
+
+    const handleClickSnack = (Transition) => () => {
+        setTransitionSnack(() => Transition);
+        setOpenSnack(true);
+    };
+
+
+    const handleCloseSnack = () => {
+        setOpenSnack(false);
+    };
 
     const handleClick = (newState) => () => {
         setState({ openAlertMetamask: true, ...newState });
@@ -183,7 +212,9 @@ const App = () => {
         auth.signin(() => {
             history.replace(from);
             if (!alertMetamask) {
-                handleClick({ verticalMetamask: 'top', horizontalMetamask: 'center' })
+                handleClick({ verticalMetamask: 'top', horizontalMetamask: 'center' });
+                setTransitionSnack(() => TransitionUp);
+                setOpenSnack(true);
             }
         });
     };
@@ -192,6 +223,7 @@ const App = () => {
         handleMenuClose();
         // Session.clear();
         // setState({ user=null })
+        handleDrawerClose();
         auth.signout(() => history.push("/"));
     }
 
@@ -220,12 +252,12 @@ const App = () => {
         setMobileMoreAnchorEl(event.currentTarget);
     };
 
-
+    if (user !== null) { handleClickSnack(TransitionUp); }
     // NAVBAR (TOP)
     return (
         <div className={classes.root}>
             <CssBaseline />
-            <NavbarDefault login={login} open={open} handleDrawerOpen={handleDrawerOpen} handleMobileMenuOpen={handleMobileMenuOpen} handleProfileMenuOpen={handleProfileMenuOpen} handleMenuClose={handleMenuClose} />
+            <NavbarDefault login={login} open={open} handleDrawerOpen={handleDrawerOpen} handleMobileMenuOpen={handleMobileMenuOpen} handleProfileMenuOpen={handleProfileMenuOpen} handleMenuClose={handleMenuClose} handleClickSnack={handleClickSnack(TransitionUp)} />
             <MenuNavMobile logout={logout} mobileMoreAnchorEl={mobileMoreAnchorEl} handleMobileMenuClose={handleMobileMenuClose} />
             <MenuNavDefault logout={logout} anchorEl={anchorEl} handleMenuClose={handleMenuClose} />
             {/* LEFTMENU - DRAWER*/}
@@ -246,7 +278,7 @@ const App = () => {
                         <Dashboard />
                     </PrivateRoute>
                 </Switch>
-
+                <SnackbarDefault content={contentSnack} openSnack={openSnack} transitionSnack={transitionSnack} handleCloseSnack={handleCloseSnack} />
             </main>
         </div>
     )

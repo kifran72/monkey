@@ -61,7 +61,7 @@ const MenuNavMobile = (props) => {
                 </MenuItem>
             )}
 
-            {user !== null && (
+            {/* {user !== null && (
                 <MenuItem onClick={logout}>
 
                     <IconButton >
@@ -70,7 +70,7 @@ const MenuNavMobile = (props) => {
                     <Typography variant="inherit" noWrap>
                         Log Out
                     </Typography>
-                </MenuItem>)}
+                </MenuItem>)} */}
         </Menu>
     )
 }

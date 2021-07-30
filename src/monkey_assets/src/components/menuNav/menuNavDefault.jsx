@@ -58,7 +58,7 @@ const MenuNavDefault = (props) => {
                 </MenuItem>
             )}
 
-            {user !== null && (
+            {/* {user !== null && (
                 <MenuItem onClick={logout}>
                     <ListItemIcon>
                         <ExitToAppIcon fontSize="small" />
@@ -68,7 +68,7 @@ const MenuNavDefault = (props) => {
                     </Typography>
 
                 </MenuItem>
-            )}
+            )} */}
         </Menu>
     )
 }

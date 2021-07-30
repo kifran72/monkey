@@ -9,7 +9,7 @@ import Container from '@material-ui/core/Container';
 // Components
 import Welcome from './welcome';
 
-import Background from '../../../assets/about_backgroundLASTVERSION.gif'
+const Background = 'https://firebasestorage.googleapis.com/v0/b/enumeriacrypto.appspot.com/o/about_backgroundLASTVERSION.gif?alt=media&token=9ca0a529-f504-4b37-9b8a-d87a4a7d26ff'
 
 
 const useStyles = theme => ({

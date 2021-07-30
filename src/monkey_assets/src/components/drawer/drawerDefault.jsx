@@ -1,29 +1,11 @@
 import React from 'react';
-import {
-    Switch,
-    Link,
-    useHistory,
-    useLocation
-} from "react-router-dom";
+import { Link } from "react-router-dom";
 import Session from 'react-session-api';
 
 // DEBUT Material
-import clsx from "clsx";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
 import IconButton from "@material-ui/core/IconButton";
-import Typography from "@material-ui/core/Typography";
-import Badge from "@material-ui/core/Badge";
-import Button from "@material-ui/core/Button";
-import MenuItem from "@material-ui/core/MenuItem";
-import Menu from "@material-ui/core/Menu";
-import MenuIcon from "@material-ui/icons/Menu";
-import AccountCircle from "@material-ui/icons/AccountCircle";
-import MailIcon from "@material-ui/icons/Mail";
-import NotificationsIcon from "@material-ui/icons/Notifications";
-import MoreIcon from "@material-ui/icons/MoreVert";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import Divider from "@material-ui/core/Divider";
@@ -31,18 +13,14 @@ import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
-import CssBaseline from "@material-ui/core/CssBaseline";
 import AccountBalanceIcon from "@material-ui/icons/AccountBalance";
-import ShoppingBasketIcon from "@material-ui/icons/ShoppingBasket";
 import InfoIcon from "@material-ui/icons/Info";
 import MapIcon from "@material-ui/icons/Map";
 import DashboardIcon from '@material-ui/icons/Dashboard';
-import Snackbar from '@material-ui/core/Snackbar';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import SettingsIcon from '@material-ui/icons/Settings';
 import TrendingUpIcon from '@material-ui/icons/TrendingUp';
-import PersonIcon from '@material-ui/icons/Person';
 // FIN Matérial
 
 
@@ -267,7 +245,7 @@ const DrawerDefault = (props) => {
                         </ListItem>
                     </Link>)}
 
-                {user !== null && (
+                {/* {user !== null && (
 
                     <ListItem button onClick={handleDrawerClose, logout}>
                         <ListItemIcon>
@@ -275,7 +253,7 @@ const DrawerDefault = (props) => {
                         </ListItemIcon>
                         <ListItemText primary="Log Out" />
                     </ListItem>
-                )}
+                )} */}
             </List>
         </Drawer>
     )
