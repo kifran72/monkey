@@ -7,13 +7,6 @@ import {
 
 import { monkey } from "../../../declarations/monkey";
 
-// document.getElementById("clickMeBtn").addEventListener("click", async () => {
-//     const name = document.getElementById("name").value.toString();
-//     // Interact with toto actor, calling the greet method
-//     const greeting = await monkey.greet(name);
-
-//     document.getElementById("greeting").innerText = greeting;
-// });
 
 
 import Routes from './routing/routes';
@@ -39,8 +32,7 @@ import SnackbarDefault from './snackbar/snackbarLogin';
 import BinanceService from './services/binance';
 
 let mesCouilles = new BinanceService();
-
-// mesCouilles.showData();
+mesCouilles.showData();
 
 const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
@@ -131,27 +123,27 @@ const useStyles = makeStyles((theme) => ({
         fontSize: 20,
     },
     loginButton: {
-        backgroundColor: "transparent",
+        backgroundcolor: "transparent",
         color: "white",
         marginRight: 10,
     },
     loginButtonMobile: {
-        backgroundColor: "transparent",
+        backgroundcolor: "transparent",
         color: "black",
         margin: 0,
     },
     logoutButtonMobile: {
-        backgroundColor: "transparent",
+        backgroundcolor: "transparent",
         color: "black",
         margin: 0,
     },
     logoutButton: {
-        backgroundColor: "transparent",
+        backgroundcolor: "transparent",
         color: "black",
         margin: 0,
     },
     about: {
-        backgroundColor: "transparent",
+        backgroundcolor: "transparent",
         color: "white",
     },
     metamask: {},
@@ -165,12 +157,16 @@ const TransitionUp = (props) => {
     return <Slide {...props} direction="up" />;
 }
 
+const test = async () => {
+    let test = await monkey.greet('test');
+    if (test) {
+        console.log(monkey);
+        console.log(test);
+    }
+}
+
 const App = () => {
-    // let name = 'toto';
-    // async function doGreet() {
-    //     const greeting = await monkey.greet(name);
-    //     setMessage(greeting);
-    // }
+    test();
     const user = Session.get("userId") ? Session.get("userId") : null;
     const classes = useStyles();
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -195,17 +191,12 @@ const App = () => {
         setOpenSnack(true);
     };
 
-
     const handleCloseSnack = () => {
         setOpenSnack(false);
     };
 
     const handleClick = (newState) => () => {
         setState({ openAlertMetamask: true, ...newState });
-    };
-
-    const handleClose = () => {
-        setState({ ...state, openAlertMetamask: false });
     };
 
     const login = () => {
@@ -221,8 +212,6 @@ const App = () => {
 
     const logout = () => {
         handleMenuClose();
-        // Session.clear();
-        // setState({ user=null })
         handleDrawerClose();
         auth.signout(() => history.push("/"));
     }
@@ -253,10 +242,11 @@ const App = () => {
     };
 
     if (user !== null) { handleClickSnack(TransitionUp); }
-    // NAVBAR (TOP)
+
     return (
         <div className={classes.root}>
             <CssBaseline />
+            {/* NAVBAR (TOP) */}
             <NavbarDefault login={login} open={open} handleDrawerOpen={handleDrawerOpen} handleMobileMenuOpen={handleMobileMenuOpen} handleProfileMenuOpen={handleProfileMenuOpen} handleMenuClose={handleMenuClose} handleClickSnack={handleClickSnack(TransitionUp)} />
             <MenuNavMobile logout={logout} mobileMoreAnchorEl={mobileMoreAnchorEl} handleMobileMenuClose={handleMobileMenuClose} />
             <MenuNavDefault logout={logout} anchorEl={anchorEl} handleMenuClose={handleMenuClose} />

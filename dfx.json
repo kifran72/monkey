@@ -1,13 +1,10 @@
 {
   "canisters": {
-    "monkey": {
+  "monkey": {
       "main": "src/monkey/main.mo",
       "type": "motoko"
     },
     "monkey_assets": {
-      "dependencies": [
-        "monkey"
-      ],
       "frontend": {
         "entrypoint": "src/monkey_assets/src/index.html"
       },

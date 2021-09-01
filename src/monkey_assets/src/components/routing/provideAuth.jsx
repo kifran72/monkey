@@ -6,7 +6,7 @@ import Session from 'react-session-api'
 import Web3 from 'web3';
 
 let web3 = new Web3(Web3.givenProvider || "ws://localhost:8000");
-console.log(web3);
+// console.log(web3);
 const authContext = createContext();
 
 if (typeof window.ethereum !== 'undefined') {
@@ -16,14 +16,14 @@ if (typeof window.ethereum !== 'undefined') {
     ethereum.on('accountsChanged', async (accounts) => {
         if (accounts[0] === undefined) {
             Session.clear();
-            window.location.reload();
+            // window.location.reload();
         } else {
             let accountBalance = await ethereum.request({ method: 'eth_getBalance', params: [accounts[0], 'latest'], });
             accountBalance = utils.formatEther(BigNumber.from(accountBalance));
             Session.set("userId", accounts[0])
             let format = Number((parseFloat(accountBalance)).toFixed(6));
             Session.set("userBalance", format);
-            window.location.reload();
+            // window.location.reload();
         }
     });
 
@@ -34,13 +34,13 @@ if (typeof window.ethereum !== 'undefined') {
         Session.set("userId", chainId);
         let format = Number((parseFloat(accountBalance)).toFixed(6));
         Session.set("userBalance", format);
-        window.location.reload();
+        // window.location.reload();
     });
 
 
     ethereum.on('disconnect', () => {
         Session.clear();
-        window.location.reload();
+        // window.location.reload();
     });
 }
 

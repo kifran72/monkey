@@ -30,7 +30,7 @@
     buffer "^6.0.3"
     buffer-pipe "^0.0.4"
 
-"@dfinity/principal@0.9.2":
+"@dfinity/principal@^0.9.2":
   version "0.9.2"
   resolved "https://registry.yarnpkg.com/@dfinity/principal/-/principal-0.9.2.tgz#b59841258fa39bdefaded51d5d37cc738c5dd19b"
   integrity sha512-YtxM+BSYS1FlLOz/SYPyvniw1j0UbMnM99IueVLaLEgIi76gRYxV9kTewbzc57DqyCcBquvn+doZpMHHqHiuUA==

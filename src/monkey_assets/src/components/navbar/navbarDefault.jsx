@@ -95,17 +95,17 @@ const useStyles = makeStyles((theme) => ({
     fontSize: 20,
   },
   loginButton: {
-    backgroundColor: "transparent",
+    backgroundcolor: "transparent",
     color: "white",
     marginRight: 10,
   },
   loginButtonMobile: {
-    backgroundColor: "transparent",
+    backgroundcolor: "transparent",
     color: "black",
     margin: 0,
   },
   about: {
-    backgroundColor: "transparent",
+    backgroundcolor: "transparent",
     color: "white",
   },
   metamask: {},
@@ -172,11 +172,11 @@ const NavbarDefault = (props) => {
         <div className={classes.sectionMobile}>
           {user === null && (
 
-            <IconButton>
-              <Button variant="contained" edge='end' color="primary" onClick={login}>
-                Connexion
-              </Button>
-            </IconButton>
+
+            <Button variant="contained" edge='end' color="primary" onClick={login}>
+              Connexion
+            </Button>
+
           )}
 
           {user !== null && (

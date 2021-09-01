@@ -21,7 +21,7 @@ class Welcome extends Component {
         return (
             <section>
                 <h1>Le passage de Lorem Ipsum standard, utilisé depuis 1500</h1>
-                <Button onClick={this.showMore}>Start</Button>
+                {/* <Button>Start</Button> */}
                 <Hello />
                 {this.state.show === true &&
                     <Hello />

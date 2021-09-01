@@ -113,27 +113,27 @@ const useStyles = makeStyles((theme) => ({
         fontSize: 20,
     },
     loginButton: {
-        backgroundColor: "transparent",
+        backgroundcolor: "transparent",
         color: "white",
         marginRight: 10,
     },
     loginButtonMobile: {
-        backgroundColor: "transparent",
+        backgroundcolor: "transparent",
         color: "black",
         margin: 0,
     },
     logoutButtonMobile: {
-        backgroundColor: "transparent",
+        backgroundcolor: "transparent",
         color: "black",
         margin: 0,
     },
     logoutButton: {
-        backgroundColor: "transparent",
+        backgroundcolor: "transparent",
         color: "black",
         margin: 0,
     },
     about: {
-        backgroundColor: "transparent",
+        backgroundcolor: "transparent",
         color: "white",
     },
     metamask: {},

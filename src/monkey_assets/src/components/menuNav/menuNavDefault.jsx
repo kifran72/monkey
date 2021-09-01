@@ -29,7 +29,7 @@ const MenuNavDefault = (props) => {
             transformOrigin={{ vertical: "top", horizontal: "right" }}
             open={isMenuOpen}
             onClose={handleMenuClose}
-            backgroundColor='white'
+            backgroundcolor='white'
         >
             {user !== null && (
                 <MenuItem>

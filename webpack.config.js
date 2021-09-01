@@ -115,12 +115,19 @@ module.exports = {
       "/binance": {
         target: "https://api.binance.com",
         pathRewrite: { "^/binance": "" },
-        secure: false,
+        secure: true,
         changeOrigin: true,
       },
+      "/api": {
+        target: "http://localhost:8000",
+        changeOrigin: true,
+        pathRewrite: {
+          "^/api": "/api",
+        },
+      },
     },
-    hot: true,
-    contentBase: path.resolve(__dirname, "./src/monkey_assets"),
-    watchContentBase: true,
+    // hot: true,
+    // contentBase: path.resolve(__dirname, "./src/monkey_assets"),
+    // watchContentBase: true,
   },
 };
